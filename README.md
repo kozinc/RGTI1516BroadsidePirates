@@ -1,2 +1,2 @@
 navodila:
-Denis was here.
+Denis was here. Again.
