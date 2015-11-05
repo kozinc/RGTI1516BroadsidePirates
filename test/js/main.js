@@ -3,13 +3,28 @@ var camera;
 var scene;
 var renderer;
 
+var controls;
+var cameraMode;
+
+window.addEventListener('resize', onResize, false);
+window.addEventListener('keydown', handleKeyDown, false);
+window.addEventListener('keyup', handleKeyUp, false);
+
 window.onload = function() {
     var stats = initStats();
-    window.addEventListener('resize', onResize, false);
+
+    controls = new function() {
+        this.speedxplus = 0.0;
+        this.speedxminus = 0.0;
+        this.speedzplus = 0.0;
+        this.speedzminus = 0.0;
+    };
+
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+    cameraMode = 2;
 
     // 3D scene
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
 
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
@@ -47,25 +62,19 @@ window.onload = function() {
     spotLight.position.set(-40, 60, -10);
     scene.add(spotLight);
 
-    camera.position.x = -30;
-    camera.position.y = 40;
-    camera.position.z = 30;
-    camera.lookAt(cube.position);
-
     document.getElementById("WebGL-output").appendChild(renderer.domElement);
 
     //dat.gui
-    var controls = new function() {
-        this.speedxplus = 0.0;
-        this.speedxminus = 0.0;
-        this.speedzplus = 0.0;
-        this.speedzminus = 0.0;
-    };
+
+    var guiControls = { changeCamera:function(){
+        if (cameraMode == 1) {
+            cameraMode = 2;
+        } else {
+            cameraMode = 1;
+        }
+    }};
     var gui = new dat.GUI();
-    gui.add(controls, 'speedxplus', 0, 0.1);
-    gui.add(controls, 'speedxminus', 0, 0.1);
-    gui.add(controls, 'speedzplus', 0, 0.1);
-    gui.add(controls, 'speedzminus', 0, 0.1);
+    gui.add(guiControls,'changeCamera');
 
     // call the render function
     renderScene();
@@ -77,12 +86,25 @@ window.onload = function() {
         cube.position.z += controls.speedzplus;
         cube.position.z -= controls.speedzminus;
 
-        camera.lookAt(cube.position);
+        transformCamera();
 
         requestAnimationFrame(renderScene);
         renderer.render(scene, camera);
     }
 
+    function transformCamera() {
+        if (cameraMode == 1) {
+            camera.position.x = -30;
+            camera.position.y = 40;
+            camera.position.z = 30;
+            camera.lookAt(cube.position);
+        } else if (cameraMode == 2){
+            camera.position.x = -30 + cube.position.x;
+            camera.position.y = 30;
+            camera.position.z = cube.position.z;
+            camera.lookAt(cube.position);
+        }
+    }
 };
 
 function initStats() {
@@ -99,4 +121,38 @@ function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function handleKeyDown(event) {
+    switch (event.keyCode) {
+        case 37:
+            controls.speedzminus = 0.1;
+            break;
+        case 38:
+            controls.speedxplus = 0.1;
+            break;
+        case 39:
+            controls.speedzplus = 0.1;
+            break;
+        case 40:
+            controls.speedxminus = 0.1;
+            break;
+    }
+}
+
+function handleKeyUp(event) {
+    switch (event.keyCode) {
+        case 37:
+            controls.speedzminus = 0.0;
+            break;
+        case 38:
+            controls.speedxplus = 0.0;
+            break;
+        case 39:
+            controls.speedzplus = 0.0;
+            break;
+        case 40:
+            controls.speedxminus = 0.0;
+            break;
+    }
 }
