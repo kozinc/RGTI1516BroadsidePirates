@@ -6,18 +6,19 @@ var renderer;
 var controls;
 var cameraMode;
 
-window.addEventListener('resize', onResize, false);
+window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
 window.addEventListener('keyup', handleKeyUp, false);
 
 window.onload = function() {
-    var stats = initStats();
+    var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
 
     controls = new function() {
         this.speedxplus = 0.0;
         this.speedxminus = 0.0;
         this.speedzplus = 0.0;
         this.speedzminus = 0.0;
+        this.rotationSpeed = 0.01;
     };
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -39,15 +40,15 @@ window.onload = function() {
     scene.add(axes);
 
 
-    var planeGeometry = new THREE.PlaneGeometry(100, 100); // Podamo velikost ravnine (x in y koordinate).
+    var planeGeometry = new THREE.PlaneGeometry(50, 40); // Podamo velikost ravnine (x in y koordinate).
     // Material MeshBasicMaterial se ne odziva na svetlobo!
-    var planeMaterial = new THREE.MeshBasicMaterial({color: 0x00BFFF});
+    var planeMaterial = new THREE.MeshLambertMaterial({color: 0x0099FF});
     var plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true; // Vklopino prejemanje/projekcijo senc na to ravnino.
 
     // Zarotiramo ravnino po X-osi.
     plane.rotation.x = -0.5 * Math.PI;
-    plane.position.x = 0;
+    plane.position.x = 15;
     plane.position.y = 0;
     plane.position.z = 0;
 
@@ -55,40 +56,86 @@ window.onload = function() {
     scene.add(plane);
 
     var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
-    var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+    var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xffff00});
     var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
     cube.castShadow = true; // Vklopimo metanje senc kocke. Pac da kocka mece sence.
 
-    cube.position.x = 0;
+    cube.position.x = -4;
     cube.position.y = 2;
     cube.position.z = 0;
 
     scene.add(cube);
 
+    // add subtle ambient lighting
+    var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+    scene.add(ambientLight);
+
+    // Vir svetlobe.
     var spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.castShadow = true; // Vklopimo sence. Tu povemo, kater vir svetlobe naj povzroca sence.
-    spotLight.position.set(-40, 60, -10);
+    spotLight.position.set(-40, 60, -10); // Lokacija izvira
+    spotLight.castShadow = true; // Vklopimo sence. Tu povemo, ali naj ta vir svetlobe naj povzroca sence.
     scene.add(spotLight);
 
     document.getElementById("WebGL-output").appendChild(renderer.domElement);
 
-    //dat.gui
 
-    var guiControls = { changeCamera:function(){
-        if (cameraMode == 1) {
-            cameraMode = 2;
-        } else {
-            cameraMode = 1;
+    var guiControls = new function() { 
+        // Spremenimo kamero.
+        this.zamenjajKamero = function(){
+            if (cameraMode == 1) {
+                cameraMode = 2;
+            } else {
+                cameraMode = 1;
+            }
         }
-    }};
+
+        this.dodajKocko = function () {
+
+                var cubeSize = Math.ceil((Math.random() * 3));
+                var cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+                var cubeMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
+                var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+                cube.castShadow = true;
+                cube.name = "cube-" + scene.children.length;
+
+
+                // position the cube randomly in the scene
+                cube.position.x = -30 + Math.round((Math.random() * planeGeometry.parameters.width));
+                cube.position.y = Math.round((Math.random() * 5));
+                cube.position.z = -20 + Math.round((Math.random() * planeGeometry.parameters.height));
+
+                // add the cube to the scene
+                scene.add(cube);
+                this.numberOfObjects = scene.children.length;
+            };
+        // V konzolo izpise vse objekte. Ce zelimo izpisati samo kocke, dodamo if (lastObject instanceof THREE.Mesh)
+        // console.log(scene. getObjectByName("cube-17")
+        this.izpisiObjekte = function () {
+                console.log(scene.children);
+        }
+    };
+
     var gui = new dat.GUI();
-    gui.add(guiControls,'changeCamera');
+    // Dodamo kontrole
+    gui.add(guiControls,'zamenjajKamero');
+    gui.add(guiControls,'dodajKocko');
+    gui.add(guiControls,'izpisiObjekte');
 
-    // call the render function
-    renderScene();
-    function renderScene() {
-        stats.update();
+    // Poklici funkcijo za renderiranje.
+    render();
+    // Renderiranje.
+    function render() {
+        stats.update(); // Posodobi FPS-je.
+        // rotate the cubes around its axes
+        scene.traverse(function (e) {
+            if (e instanceof THREE.Mesh && e != plane) {
 
+                e.rotation.x += controls.rotationSpeed;
+                e.rotation.y += controls.rotationSpeed;
+                e.rotation.z += controls.rotationSpeed;
+            }
+        });
+        // Kontrole.
         cube.position.x += controls.speedxplus;
         cube.position.x -= controls.speedxminus;
         cube.position.z += controls.speedzplus;
@@ -96,7 +143,7 @@ window.onload = function() {
 
         transformCamera();
 
-        requestAnimationFrame(renderScene);
+        requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
 
@@ -115,6 +162,7 @@ window.onload = function() {
     }
 };
 
+// Funkcija za inicializacijo prikazovanja FPS-jev zgoraj levo.
 function initStats() {
     var stats = new Stats();
     stats.setMode(0);
@@ -125,6 +173,7 @@ function initStats() {
     return stats;
 }
 
+// Ko spremenimo velikost brskalnika.
 function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
