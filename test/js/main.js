@@ -23,33 +23,41 @@ window.onload = function() {
     camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
     cameraMode = 2;
 
-    // 3D scene
+    // Ustvarimo 3D sceno, katera "drzi" vse objekte, osvetljevanje in kamere.
     scene = new THREE.Scene();
 
+    // Ustvarimo "render", ki skrbi za izris objektov za doloceno pozicijo/kot kamere.
     renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(new THREE.Color(0xFFFFFF, 1.0)); // Barva ozadja.
+    renderer.setSize(window.innerWidth, window.innerHeight); // Velikost izrisovalne povrsine.
+    // Ustvari sence. Potrebno je eksplicitno dolociti, kateri objekti mecejo in kateri prejemajo sence! In kater
+    // vir svetlobe povzroca sence!
     renderer.shadowMapEnabled = true;
 
+    // Ustvarimo osi in jih dodamo v sceno.
     var axes = new THREE.AxisHelper(5);
     scene.add(axes);
 
-    var planeGeometry = new THREE.PlaneGeometry(50, 50);
-    var planeMaterial = new THREE.MeshLambertMaterial({color: 0xcccccc});
-    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.receiveShadow = true;
 
+    var planeGeometry = new THREE.PlaneGeometry(100, 100); // Podamo velikost ravnine (x in y koordinate).
+    // Material MeshBasicMaterial se ne odziva na svetlobo!
+    var planeMaterial = new THREE.MeshBasicMaterial({color: 0x00BFFF});
+    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.receiveShadow = true; // Vklopino prejemanje/projekcijo senc na to ravnino.
+
+    // Zarotiramo ravnino po X-osi.
     plane.rotation.x = -0.5 * Math.PI;
     plane.position.x = 0;
     plane.position.y = 0;
     plane.position.z = 0;
 
+    // V sceno dodamo ravnino.
     scene.add(plane);
 
     var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
     var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
     var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
+    cube.castShadow = true; // Vklopimo metanje senc kocke. Pac da kocka mece sence.
 
     cube.position.x = 0;
     cube.position.y = 2;
@@ -58,7 +66,7 @@ window.onload = function() {
     scene.add(cube);
 
     var spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.castShadow = true;
+    spotLight.castShadow = true; // Vklopimo sence. Tu povemo, kater vir svetlobe naj povzroca sence.
     spotLight.position.set(-40, 60, -10);
     scene.add(spotLight);
 
