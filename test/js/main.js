@@ -127,6 +127,7 @@ window.onload = function() {
     // Renderiranje.
     function render() {
         stats.update(); // Posodobi FPS-je.
+        
         // rotate the cubes around its axes
         scene.traverse(function (e) {
             if (e instanceof THREE.Mesh && e != plane && e != cube) {
