@@ -19,6 +19,7 @@ window.onload = function() {
         this.speedzplus = 0.0;
         this.speedzminus = 0.0;
         this.rotationSpeed = 0.01;
+        this.rotationY = 0.0;
     };
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -94,18 +95,18 @@ window.onload = function() {
                 var cubeSize = Math.ceil((Math.random() * 3));
                 var cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
                 var cubeMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
-                var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-                cube.castShadow = true;
-                cube.name = "cube-" + scene.children.length;
+                var cube2 = new THREE.Mesh(cubeGeometry, cubeMaterial);
+                cube2.castShadow = true;
+                cube2.name = "cube-" + scene.children.length;
 
 
                 // position the cube randomly in the scene
-                cube.position.x = -30 + Math.round((Math.random() * planeGeometry.parameters.width));
-                cube.position.y = Math.round((Math.random() * 5));
-                cube.position.z = -20 + Math.round((Math.random() * planeGeometry.parameters.height));
+                cube2.position.x = -30 + Math.round((Math.random() * planeGeometry.parameters.width));
+                cube2.position.y = Math.round((Math.random() * 5));
+                cube2.position.z = -20 + Math.round((Math.random() * planeGeometry.parameters.height));
 
                 // add the cube to the scene
-                scene.add(cube);
+                scene.add(cube2);
                 this.numberOfObjects = scene.children.length;
             };
         // V konzolo izpise vse objekte. Ce zelimo izpisati samo kocke, dodamo if (lastObject instanceof THREE.Mesh)
@@ -128,7 +129,7 @@ window.onload = function() {
         stats.update(); // Posodobi FPS-je.
         // rotate the cubes around its axes
         scene.traverse(function (e) {
-            if (e instanceof THREE.Mesh && e != plane) {
+            if (e instanceof THREE.Mesh && e != plane && e != cube) {
 
                 e.rotation.x += controls.rotationSpeed;
                 e.rotation.y += controls.rotationSpeed;
@@ -140,6 +141,10 @@ window.onload = function() {
         cube.position.x -= controls.speedxminus;
         cube.position.z += controls.speedzplus;
         cube.position.z -= controls.speedzminus;
+        
+        // Zavrti kocko po Y-osi, ce smo jo s smernimi tipkami zavrteli.
+        cube.rotation.y += controls.rotationY;
+        //console.log(controls.rotationY) // izpisuj "hitrost" vrtenja ladje.
 
         transformCamera();
 
@@ -183,16 +188,24 @@ function onResize() {
 function handleKeyDown(event) {
     switch (event.keyCode) {
         case 37:
-            controls.speedzminus = 0.1;
+            //controls.speedzminus += 0.1;
+            // Z naslednjim stavkom povemo najvecjo hitrost obracanja ladje v levo.
+            if (controls.rotationY < 0.015){
+                controls.rotationY += 0.005;
+            }
             break;
         case 38:
-            controls.speedxplus = 0.1;
+            controls.speedxplus += 0.1;
             break;
         case 39:
-            controls.speedzplus = 0.1;
+            //controls.speedzplus += 0.1;
+            // Z naslednjim stavkom povemo najvecjo hitrost obracanja ladje v desno.
+            if (controls.rotationY > -0.015){
+                controls.rotationY -= 0.005;
+            }
             break;
         case 40:
-            controls.speedxminus = 0.1;
+            controls.speedxminus += 0.1;
             break;
     }
 }
