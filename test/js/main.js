@@ -16,8 +16,8 @@ window.onload = function() {
     controls = new function() {
         this.speedxplus = 0.0;
         this.speedxminus = 0.0;
-        this.speedzplus = 0.0;
-        this.speedzminus = 0.0;
+
+        this.translacijaX = 0.0;
         this.rotationSpeed = 0.01;
         this.rotationY = 0.0;
     };
@@ -55,6 +55,7 @@ window.onload = function() {
 
     // V sceno dodamo ravnino.
     scene.add(plane);
+
 
     var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
     var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xffff00});
@@ -138,10 +139,8 @@ window.onload = function() {
             }
         });
         // Kontrole.
-        cube.position.x += controls.speedxplus;
-        cube.position.x -= controls.speedxminus;
-        cube.position.z += controls.speedzplus;
-        cube.position.z -= controls.speedzminus;
+        cube.translateX(controls.translacijaX);
+        //cube.translateX(-controls.translacijaX);
         
         // Zavrti kocko po Y-osi, ce smo jo s smernimi tipkami zavrteli.
         cube.rotation.y += controls.rotationY;
@@ -165,6 +164,14 @@ window.onload = function() {
             camera.position.z = cube.position.z;
             camera.lookAt(cube.position);
         }
+
+        var relativeCameraOffset = new THREE.Vector3(-20,10,0);
+        var cameraOffset = relativeCameraOffset.applyMatrix4( cube.matrixWorld );
+
+        camera.position.x = cameraOffset.x;
+        camera.position.y = cameraOffset.y;
+        camera.position.z = cameraOffset.z;
+        camera.lookAt(cube.position);
     }
 };
 
@@ -196,7 +203,10 @@ function handleKeyDown(event) {
             }
             break;
         case 38:
-            controls.speedxplus += 0.1;
+            // Povecuj hitrost naprej.
+            if (controls.translacijaX < 0.4){
+                controls.translacijaX += 0.05;
+            }
             break;
         case 39:
             //controls.speedzplus += 0.1;
@@ -206,7 +216,9 @@ function handleKeyDown(event) {
             }
             break;
         case 40:
-            controls.speedxminus += 0.1;
+            if (controls.translacijaX > -0.01){
+                controls.translacijaX -= 0.05;
+            }
             break;
     }
 }
@@ -214,16 +226,16 @@ function handleKeyDown(event) {
 function handleKeyUp(event) {
     switch (event.keyCode) {
         case 37:
-            controls.speedzminus = 0.0;
+            //controls.speedzminus = 0.0;
             break;
         case 38:
-            controls.speedxplus = 0.0;
+            //controls.translacijaX = 0.0;
             break;
         case 39:
-            controls.speedzplus = 0.0;
+            //controls.speedzplus = 0.0;
             break;
         case 40:
-            controls.speedxminus = 0.0;
+            //controls.translacijaX = 0.0;
             break;
     }
 }
