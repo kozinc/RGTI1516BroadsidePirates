@@ -7,7 +7,7 @@ Naša igra je tretjeosebna pustolovščina, v kateri igraš pirata, ki želi svo
 Svet bo sestavljen iz kopnega in morja. Ladje se bodo pomikale po gladini morja (2 dimenziji). Izgled bo stiliziran in nerealen v velikostnih razmerjih.
 
 ### 1.1.1 Pregled
-
+Morje bo izgledalo dinamično in ne kot kopiran vzorec animacije. Plaže bodo različne - peščena, kamnita, klifi... Morje bo speljano v nezapleten labirint, tako da bo imel igralec nekaj možnosti za dosego cilja.
 
 ### 1.1.2 Ozadje
 V pogledu od zgoraj bodo neinteraktivni deli ozadja vse kopno, ki obdaja mapo. V pogledu izza ladje pa kopno in okoli mape krogla s teksturo neba.
