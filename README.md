@@ -5,7 +5,7 @@ Naša igra je tretjeosebna pustolovščina, v kateri igraš pirata, ki želi svo
 
 ## 1.1 Opis sveta
 
-### 1.1.1 
+### 1.1.1 Pregled
 
 ### 1.1.2 Ozadje
 
