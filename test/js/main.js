@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// FRI 2015/2016, Racunalniska grafika in tehnologija iger
+
+// Denis Kotnik (denis.kotnik@gmail.com)
+// Klemen Červ (klemen.cerv@gmail.com)
+// Kristian Žarn (kristian.zarn@gmail.com)
+// Aljaž Kozina (kozinc@gmail.com)
+///////////////////////////////////////////////////////////////////////////////////////
 
 var camera;
 var scene;
@@ -33,6 +41,7 @@ window.onload = function() {
     scene = new THREE.Scene();
 
     // Ustvarimo "render", ki skrbi za izris objektov za doloceno pozicijo/kot kamere.
+    ///////////////////////////////////////////////////////////////////////////////////////
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(new THREE.Color(0xFFFFFF, 1.0)); // Barva ozadja.
     renderer.setSize(window.innerWidth, window.innerHeight); // Velikost izrisovalne povrsine.
@@ -41,9 +50,12 @@ window.onload = function() {
     renderer.shadowMapEnabled = true;
 
     // Ustvarimo osi in jih dodamo v sceno.
+    ///////////////////////////////////////////////////////////////////////////////////////
     var axes = new THREE.AxisHelper(5);
     scene.add(axes);
 
+    // Neka modra ravnina
+    ///////////////////////////////////////////////////////////////////////////////////////
     /*var planeGeometry = new THREE.PlaneGeometry(50, 40); // Podamo velikost ravnine (x in y koordinate).
     // Material MeshBasicMaterial se ne odziva na svetlobo!
     var planeMaterial = new THREE.MeshLambertMaterial({color: 0x0099FF});
@@ -59,14 +71,14 @@ window.onload = function() {
     // V sceno dodamo ravnino.
     //scene.add(plane);
 
-    // Texture za tla
+    // Texture za tla (namesto modre ravnine)
     ///////////////////////////////////////////////////////////////////////////////////////
     var floorTexture = new THREE.ImageUtils.loadTexture( 'textures/water.jpg' );
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
     floorTexture.repeat.set( 25, 25 );
     // DoubleSide: render texture on both sides of mesh
     var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+    var floorGeometry = new THREE.PlaneGeometry(50, 50, 1, 1);
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -0.5 * Math.PI;
     floor.position.x = 15;
@@ -74,19 +86,19 @@ window.onload = function() {
     floor.position.z = 0;
     scene.add(floor);
 
-    // Dodamo ladjo - "boat"
+    // Dodamo ladjo - "ladja"
     ///////////////////////////////////////////////////////////////////////////////////////
 
     var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
     var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xffff00});
-    var boat = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    boat.castShadow = true; // Vklopimo metanje senc kocke. Pac da kocka mece sence.
+    var ladja = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    ladja.castShadow = true; // Vklopimo metanje senc kocke. Pac da kocka mece sence.
 
-    boat.position.x = -4;
-    boat.position.y = 2;
-    boat.position.z = 0;
+    ladja.position.x = -4;
+    ladja.position.y = 2;
+    ladja.position.z = 0;
 
-    scene.add(boat);
+    scene.add(ladja);
 
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -157,19 +169,19 @@ window.onload = function() {
         
         // rotate the cubes around its axes
         scene.traverse(function (e) {
-            if (e instanceof THREE.Mesh && e != boat && e != floor) {
+            if (e instanceof THREE.Mesh && e != ladja && e != floor) {
 
                 e.rotation.x += controls.rotationSpeed;
                 e.rotation.y += controls.rotationSpeed;
                 e.rotation.z += controls.rotationSpeed;
             }
         });
-        // Kontrole.
-        boat.translateX(controls.translacijaX);
+        // Kontrole - premikanje ladje.
+        ladja.translateX(controls.translacijaX);
         //cube.translateX(-controls.translacijaX);
         
         // Zavrti kocko po Y-osi, ce smo jo s smernimi tipkami zavrteli.
-        boat.rotation.y += controls.rotationY;
+        ladja.rotation.y += controls.rotationY;
         //console.log(controls.rotationY) // izpisuj "hitrost" vrtenja ladje.
 
         transformCamera();
@@ -184,21 +196,17 @@ window.onload = function() {
             camera.position.x = -30;
             camera.position.y = 40;
             camera.position.z = 30;
-            camera.lookAt(boat.position);
+            camera.lookAt(ladja.position);
         } else if (cameraMode == 2){
-            camera.position.x = -30 + boat.position.x;
-            camera.position.y = 30;
-            camera.position.z = boat.position.z;
-            camera.lookAt(boat.position);
+            var relativeCameraOffset = new THREE.Vector3(-20,10,0);
+            var cameraOffset = relativeCameraOffset.applyMatrix4( ladja.matrixWorld );
+
+            camera.position.x = cameraOffset.x;
+            camera.position.y = cameraOffset.y;
+            camera.position.z = cameraOffset.z;
+            camera.lookAt(ladja.position);
         }
 
-        var relativeCameraOffset = new THREE.Vector3(-20,10,0);
-        var cameraOffset = relativeCameraOffset.applyMatrix4( boat.matrixWorld );
-
-        camera.position.x = cameraOffset.x;
-        camera.position.y = cameraOffset.y;
-        camera.position.z = cameraOffset.z;
-        camera.lookAt(boat.position);
     }
 };
 
@@ -220,6 +228,7 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// Ko pritisnemo tipke.
 function handleKeyDown(event) {
     switch (event.keyCode) {
         case 37:
@@ -250,6 +259,7 @@ function handleKeyDown(event) {
     }
 }
 
+// Ko spustimo tipke.
 function handleKeyUp(event) {
     switch (event.keyCode) {
         case 37:
