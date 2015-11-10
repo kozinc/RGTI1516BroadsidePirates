@@ -63,7 +63,7 @@ window.onload = function() {
     ///////////////////////////////////////////////////////////////////////////////////////
     var floorTexture = new THREE.ImageUtils.loadTexture( 'textures/water.jpg' );
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-    floorTexture.repeat.set( 10, 10 );
+    floorTexture.repeat.set( 25, 25 );
     // DoubleSide: render texture on both sides of mesh
     var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
     var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
@@ -178,6 +178,7 @@ window.onload = function() {
         renderer.render(scene, camera);
     }
 
+    // Kamera naj sledi ladji.
     function transformCamera() {
         if (cameraMode == 1) {
             camera.position.x = -30;

@@ -1,0 +1,5 @@
+# Dobri primeri s kodo:
+http://stemkoski.github.io/Three.js/#collision-detection
+
+# Voda v WebGL (prezentacija):
+http://29a.ch/slides/2012/webglwater/#title
