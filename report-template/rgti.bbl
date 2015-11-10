@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{Foley1994}
+James~D. Foley, Richard~L. Phillips, John~F. Hughes, Andries~van Dam, and
+  Steven~K. Feiner.
+\newblock {\em Introduction to Computer Graphics}.
+\newblock Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA, 1994.
+
+\bibitem{Meng2015}
+Johannes Meng, Marios Papas, Ralf Habel, Carsten Dachsbacher, Steve Marschner,
+  Markus Gross, and Wojciech Jarosz.
+\newblock Multi-scale modeling and rendering of granular materials.
+\newblock {\em ACM Transactions on Graphics (Proceedings of SIGGRAPH)}, 34(4),
+  July 2015.
+
+\end{thebibliography}
