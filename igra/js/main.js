@@ -78,7 +78,7 @@ window.onload = function() {
     floorTexture.repeat.set( 25, 25 );
     // DoubleSide: render texture on both sides of mesh
     var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-    var floorGeometry = new THREE.PlaneGeometry(50, 50, 1, 1);
+    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -0.5 * Math.PI;
     floor.position.x = 15;
@@ -112,6 +112,23 @@ window.onload = function() {
     spotLight.position.set(-40, 60, -10); // Lokacija izvira
     spotLight.castShadow = true; // Vklopimo sence. Tu povemo, ali naj ta vir svetlobe naj povzroca sence.
     scene.add(spotLight);
+
+    // Skybox
+    ///////////////////////////////////////////////////////////////////////////////////////
+    var imagePrefix = "textures/skybox_";
+    var directions  = ["front", "back", "up", "down", "left", "right"];
+    var imageSuffix = ".jpg";
+    var skyGeometry = new THREE.CubeGeometry( 500, 500, 500 );   
+    
+    var materialArray = [];
+    for (var i = 0; i < 6; i++)
+        materialArray.push( new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+            side: THREE.BackSide
+        }));
+    var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+    var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+    scene.add( skyBox );
 
     // Poiscemo HTML objekt.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +186,7 @@ window.onload = function() {
         
         // rotate the cubes around its axes
         scene.traverse(function (e) {
-            if (e instanceof THREE.Mesh && e != ladja && e != floor) {
+            if (e instanceof THREE.Mesh && e != ladja && e != floor && e != skyBox) {
 
                 e.rotation.x += controls.rotationSpeed;
                 e.rotation.y += controls.rotationSpeed;
@@ -198,7 +215,7 @@ window.onload = function() {
             camera.position.z = 30;
             camera.lookAt(ladja.position);
         } else if (cameraMode == 2){
-            var relativeCameraOffset = new THREE.Vector3(-20,10,0);
+            var relativeCameraOffset = new THREE.Vector3(-25,8,0);
             var cameraOffset = relativeCameraOffset.applyMatrix4( ladja.matrixWorld );
 
             camera.position.x = cameraOffset.x;
