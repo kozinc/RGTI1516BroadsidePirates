@@ -4,10 +4,13 @@
 Naša igra je tretjeosebna pustolovščina, v kateri igraš pirata, ki želi svoj zaklad prinesti v pristanišče, brez da bi mu ga drugi pirati ukradli ali potopili ladjo. Igra je lahke do srednje težavnosti, namenjena širši množici. V zaprtem svetu, oblikovanem kot labirint, se glavni igralec izogiba drugim ladjam ali pa jih napada s svojim orožjem medtem ko išče pristanišče.
 
 ## 1.1 Opis sveta
+Svet bo sestavljen iz kopnega in morja. Ladje se bodo pomikale po gladini morja (2 dimenziji). Izgled bo stiliziran in nerealen v velikostnih razmerjih.
 
 ### 1.1.1 Pregled
 
+
 ### 1.1.2 Ozadje
+V pogledu od zgoraj bodo neinteraktivni deli ozadja vse kopno, ki obdaja mapo. V pogledu izza ladje pa kopno in okoli mape krogla s teksturo neba.
 
 ### 1.1.3 Ključne lokacije
 V svetu so najbolj ključna lokacija pristanišča, kjer igralec išče ciljno pristanišče - tam lahko ladjo popravi in nadgrajuje, shrani zaklad in dobi novo ciljno pristanišče. Druge pomembne lokacije so nahajališča dobrin, kjer lahko igralec pobere dodaten zaklad ali pa si popravi ladjo, ter druga pristanišča, kamor se igralec lahko vrne s delom preostalega zakladom, če mu nasprotniki uničejo ladjo, kamor pa ne more shraniti zaklada.
