@@ -22,10 +22,14 @@ window.onload = function() {
         this.rotationY = 0.0;
     };
 
+    // Ustvarimo kamero.
+    ///////////////////////////////////////////////////////////////////////////////////////
     camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
     cameraMode = 2;
 
+
     // Ustvarimo 3D sceno, katera "drzi" vse objekte, osvetljevanje in kamere.
+    ///////////////////////////////////////////////////////////////////////////////////////
     scene = new THREE.Scene();
 
     // Ustvarimo "render", ki skrbi za izris objektov za doloceno pozicijo/kot kamere.
@@ -40,8 +44,7 @@ window.onload = function() {
     var axes = new THREE.AxisHelper(5);
     scene.add(axes);
 
-
-    var planeGeometry = new THREE.PlaneGeometry(50, 40); // Podamo velikost ravnine (x in y koordinate).
+    /*var planeGeometry = new THREE.PlaneGeometry(50, 40); // Podamo velikost ravnine (x in y koordinate).
     // Material MeshBasicMaterial se ne odziva na svetlobo!
     var planeMaterial = new THREE.MeshLambertMaterial({color: 0x0099FF});
     var plane = new THREE.Mesh(planeGeometry, planeMaterial);
@@ -51,36 +54,59 @@ window.onload = function() {
     plane.rotation.x = -0.5 * Math.PI;
     plane.position.x = 15;
     plane.position.y = 0;
-    plane.position.z = 0;
+    plane.position.z = 0;*/
 
     // V sceno dodamo ravnino.
-    scene.add(plane);
+    //scene.add(plane);
 
+    // Texture za tla
+    ///////////////////////////////////////////////////////////////////////////////////////
+    var floorTexture = new THREE.ImageUtils.loadTexture( 'textures/water.jpg' );
+    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+    floorTexture.repeat.set( 10, 10 );
+    // DoubleSide: render texture on both sides of mesh
+    var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -0.5 * Math.PI;
+    floor.position.x = 15;
+    floor.position.y = 0;
+    floor.position.z = 0;
+    scene.add(floor);
+
+    // Dodamo ladjo - "boat"
+    ///////////////////////////////////////////////////////////////////////////////////////
 
     var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
     var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xffff00});
-    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true; // Vklopimo metanje senc kocke. Pac da kocka mece sence.
+    var boat = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    boat.castShadow = true; // Vklopimo metanje senc kocke. Pac da kocka mece sence.
 
-    cube.position.x = -4;
-    cube.position.y = 2;
-    cube.position.z = 0;
+    boat.position.x = -4;
+    boat.position.y = 2;
+    boat.position.z = 0;
 
-    scene.add(cube);
+    scene.add(boat);
 
+    // Ambientna svetloba.
+    ///////////////////////////////////////////////////////////////////////////////////////
     // add subtle ambient lighting
     var ambientLight = new THREE.AmbientLight(0x0c0c0c);
     scene.add(ambientLight);
 
     // Vir svetlobe.
+    ///////////////////////////////////////////////////////////////////////////////////////
     var spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(-40, 60, -10); // Lokacija izvira
     spotLight.castShadow = true; // Vklopimo sence. Tu povemo, ali naj ta vir svetlobe naj povzroca sence.
     scene.add(spotLight);
 
+    // Poiscemo HTML objekt.
+    ///////////////////////////////////////////////////////////////////////////////////////
     document.getElementById("WebGL-output").appendChild(renderer.domElement);
 
-
+    // GUI kontrole.
+    ///////////////////////////////////////////////////////////////////////////////////////
     var guiControls = new function() { 
         // Spremenimo kamero.
         this.zamenjajKamero = function(){
@@ -102,9 +128,9 @@ window.onload = function() {
 
 
                 // position the cube randomly in the scene
-                cube2.position.x = -30 + Math.round((Math.random() * planeGeometry.parameters.width));
+                cube2.position.x = -30 + Math.round((Math.random() * floorGeometry.parameters.width));
                 cube2.position.y = Math.round((Math.random() * 5));
-                cube2.position.z = -20 + Math.round((Math.random() * planeGeometry.parameters.height));
+                cube2.position.z = -20 + Math.round((Math.random() * floorGeometry.parameters.height));
 
                 // add the cube to the scene
                 scene.add(cube2);
@@ -131,7 +157,7 @@ window.onload = function() {
         
         // rotate the cubes around its axes
         scene.traverse(function (e) {
-            if (e instanceof THREE.Mesh && e != plane && e != cube) {
+            if (e instanceof THREE.Mesh && e != boat && e != floor) {
 
                 e.rotation.x += controls.rotationSpeed;
                 e.rotation.y += controls.rotationSpeed;
@@ -139,11 +165,11 @@ window.onload = function() {
             }
         });
         // Kontrole.
-        cube.translateX(controls.translacijaX);
+        boat.translateX(controls.translacijaX);
         //cube.translateX(-controls.translacijaX);
         
         // Zavrti kocko po Y-osi, ce smo jo s smernimi tipkami zavrteli.
-        cube.rotation.y += controls.rotationY;
+        boat.rotation.y += controls.rotationY;
         //console.log(controls.rotationY) // izpisuj "hitrost" vrtenja ladje.
 
         transformCamera();
@@ -157,21 +183,21 @@ window.onload = function() {
             camera.position.x = -30;
             camera.position.y = 40;
             camera.position.z = 30;
-            camera.lookAt(cube.position);
+            camera.lookAt(boat.position);
         } else if (cameraMode == 2){
-            camera.position.x = -30 + cube.position.x;
+            camera.position.x = -30 + boat.position.x;
             camera.position.y = 30;
-            camera.position.z = cube.position.z;
-            camera.lookAt(cube.position);
+            camera.position.z = boat.position.z;
+            camera.lookAt(boat.position);
         }
 
         var relativeCameraOffset = new THREE.Vector3(-20,10,0);
-        var cameraOffset = relativeCameraOffset.applyMatrix4( cube.matrixWorld );
+        var cameraOffset = relativeCameraOffset.applyMatrix4( boat.matrixWorld );
 
         camera.position.x = cameraOffset.x;
         camera.position.y = cameraOffset.y;
         camera.position.z = cameraOffset.z;
-        camera.lookAt(cube.position);
+        camera.lookAt(boat.position);
     }
 };
 
