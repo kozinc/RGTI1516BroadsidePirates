@@ -78,7 +78,7 @@ window.onload = function() {
     floorTexture.repeat.set( 25, 25 );
     // DoubleSide: render texture on both sides of mesh
     var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+    var floorGeometry = new THREE.PlaneGeometry(10, 10, 1, 1);
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -0.5 * Math.PI;
     floor.position.x = 15;
@@ -86,7 +86,7 @@ window.onload = function() {
     floor.position.z = 0;
     scene.add(floor);
 
-    // Dodamo ladjo - "ladja"
+    // Dodamo kocko - "ladjo"
     ///////////////////////////////////////////////////////////////////////////////////////
 
     var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
@@ -99,6 +99,19 @@ window.onload = function() {
     ladja.position.z = 0;
 
     scene.add(ladja);
+
+    // Dodamo model ladje
+    ///////////////////////////////////////////////////////////////////////////////////////
+    var loader = new THREE.OBJMTLLoader();
+    loader.load('models/ladja_majhna.obj', 'models/ladja_majhna.mtl', function (ladja_model) {
+        //ladja_model.scale.set(1, 1, 1);
+        //ladja3 = ladja_model;
+        ladja_model.name = "ladja_model";
+        scene.add(ladja_model);
+
+        //ladja_model.rotation.x = 0.2;
+        //ladja_model.rotation.y = -1.3;
+    });
 
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -178,15 +191,15 @@ window.onload = function() {
     gui.add(guiControls,'dodajKocko');
     gui.add(guiControls,'izpisiObjekte');
 
-    // Poklici funkcijo za renderiranje.
-    render();
     // Renderiranje.
+    ///////////////////////////////////////////////////////////////////////////////////////
+    render();
     function render() {
         stats.update(); // Posodobi FPS-je.
         
         // rotate the cubes around its axes
         scene.traverse(function (e) {
-            if (e instanceof THREE.Mesh && e != ladja && e != floor && e != skyBox) {
+            if (e instanceof THREE.Mesh && e != ladja && e != floor && e != skyBox && e instanceof THREE.Group) {
 
                 e.rotation.x += controls.rotationSpeed;
                 e.rotation.y += controls.rotationSpeed;
