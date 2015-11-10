@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.10.14)  10 NOV 2015 21:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.10.14)  10 NOV 2015 22:33
 entering extended mode
 **rgti.tex
 (rgti.tex
@@ -535,125 +535,128 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 27.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 27.
- <Overboard.jpg, id=44, 321.2pt x 180.675pt>
-File: Overboard.jpg Graphic file (type jpg)
-
-<use Overboard.jpg>
-Package pdftex.def Info: Overboard.jpg used on input line 40.
-(pdftex.def)             Requested size: 227.62206pt x 128.04028pt.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 45.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 53.
+(babel)             in language  on input line 36.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 56.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 39.
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 56.
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 59.
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 64.
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 69.
+(babel)             in language  on input line 39.
 
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+
+ []
+
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 42.
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 47.
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 52.
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 69.
+(hyperref)                removing `\textasciicaron' on input line 52.
 
 
-Overfull \hbox (6.4858pt too wide) in paragraph at lines 72--73
+Overfull \hbox (6.4858pt too wide) in paragraph at lines 54--56
 \OT1/ptm/m/n/10 Druge po-membne lo-ka-cije so na-ha-jali[]s[]ca do-brin, kjer l
 ahko
  []
 
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 74.
+(babel)             in language  on input line 57.
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 78.
+(babel)             in language  on input line 62.
+
+Overfull \hbox (12.56555pt too wide) in paragraph at lines 64--66
+\OT1/ptm/m/n/10 Po-gla-vi-tni objekti, ki bodo za-jeti v igri, bodo ladje - igr
+al[]ceva
+ []
+
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 78.
+(babel)             in language  on input line 67.
+
+Package hyperref Warning: Composite letter `\textasciicaron+C'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 67.
+
+
+Overfull \hbox (5.34581pt too wide) in paragraph at lines 69--71
+\OT1/ptm/m/n/10 je po-spe[]seno v pri-mer-javi z re-al-nim []casom za-radi pove
+[]cane
+ []
+
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 72.
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 77.
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 81.
+Package babel Info: Redefining slovene shorthand "|
+(babel)             in language  on input line 81.
 [1{C:/Users/Kozinc/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
 
- <./Overboard.jpg>]
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 79.
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 84.
+]
+<Overboard.jpg, id=56, 321.2pt x 180.675pt>
+File: Overboard.jpg Graphic file (type jpg)
+ <use Overboard.jpg>
+Package pdftex.def Info: Overboard.jpg used on input line 88.
+(pdftex.def)             Requested size: 227.62206pt x 128.04028pt.
+ (rgti.bbl
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 5.
 
-
-Package hyperref Warning: Composite letter `\textasciicaron+C'
-(hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 84.
-
-
-Overfull \hbox (3.23555pt too wide) in paragraph at lines 87--88
-[]\OT1/ptm/m/n/10 Igralec ladjo pre-mika v re-al-nem []casu, pre-mi-ka-nje ladj
-e
- []
-
-
-Overfull \hbox (16.68578pt too wide) in paragraph at lines 87--88
-\OT1/ptm/m/n/10 pa je po-spe[]seno v pri-mer-javi z re-al-nim []casom za-radi p
-ove[]cane
- []
-
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 89.
-
-Overfull \hbox (3.09616pt too wide) in paragraph at lines 92--93
-[]\OT1/ptm/m/n/10 Pri iz-de-lavi na[]sega se-mi-narja bomo v pr-vem delu pred-
- []
-
-Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 94.
-(rgti.bbl
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 12.
+(Font)              <9> on input line 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 9--15
-$\OT1/pcr/m/n/9 title = Overboard ! &oldid = 679064544$[]\OT1/ptm/m/n/9 , 2015.
+Underfull \hbox (badness 10000) in paragraph at lines 4--8
+\OT1/ptm/m/n/9 pe-dia.'' []$\OT1/pcr/m/n/9 http : / / en . wikipedia . org / w 
+/ index .$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--8
+$\OT1/pcr/m/n/9 php ? title = Overboard ! &oldid = 679064544$[]\OT1/ptm/m/n/9 ,
 
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 107.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 98.
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 107.
+(babel)             in language  on input line 98.
 Package babel Info: Redefining slovene shorthand "|
-(babel)             in language  on input line 107.
+(babel)             in language  on input line 98.
  [2
 
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 107.
+ <./Overboard.jpg>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 98.
  (rgti.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 107.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 107.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 98.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 98.
 Package rerunfilecheck Info: File `rgti.out' has not changed.
 (rerunfilecheck)             Checksum: 429599978CB6802CF635E08E2E77EADD;662.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 107.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 98.
  ) 
 Here is how much of TeX's memory you used:
- 6183 strings out of 493673
- 89947 string characters out of 3141526
+ 6174 strings out of 493673
+ 89856 string characters out of 3141526
  191722 words of memory out of 3000000
- 9430 multiletter control sequences out of 15000+200000
- 24425 words of font info for 51 fonts, out of 3000000 for 9000
+ 9426 multiletter control sequences out of 15000+200000
+ 20233 words of font info for 44 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 29i,9n,32p,467b,336s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,9n,32p,472b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files (
 x86)/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX
  2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
 type1/urw/times/utmri8a.pfb>
-Output written on rgti.pdf (2 pages, 85467 bytes).
+Output written on rgti.pdf (2 pages, 83856 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 21 named destinations out of 1000 (max. 500000)
+ 89 PDF objects out of 1000 (max. 8388607)
+ 19 named destinations out of 1000 (max. 500000)
  86 words of extra memory for PDF output out of 10000 (max. 10000000)
 
