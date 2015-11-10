@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.9)  10 NOV 2015 22:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.9)  10 NOV 2015 23:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -568,17 +568,13 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 47.
 Package babel Info: Redefining slovene shorthand "|
 (babel)             in language  on input line 47.
-
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
-
- []
-
 Package babel Info: Redefining slovene shorthand "|
 (babel)             in language  on input line 50.
 Package babel Info: Redefining slovene shorthand "|
 (babel)             in language  on input line 53.
 Package babel Info: Redefining slovene shorthand "|
 (babel)             in language  on input line 56.
+
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
@@ -680,7 +676,7 @@ exlive/2015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2
 015/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-
 dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts
 /type1/urw/times/utmri8a.pfb>
-Output written on rgti.pdf (2 pages, 73843 bytes).
+Output written on rgti.pdf (2 pages, 73230 bytes).
 PDF statistics:
  91 PDF objects out of 1000 (max. 8388607)
  81 compressed objects within 1 object stream
