@@ -1,4 +1,4 @@
 git pull
-git add *
+git add -u
 git commit -m "komentar"
 git push
