@@ -16,9 +16,11 @@ var cameraMode;
 
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
-window.addEventListener('keyup', handleKeyUp, false);
+//window.addEventListener('keyup', handleKeyUp, false);
 
 window.onload = function() {
+    var keyboard = new KeyboardState();
+
     var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
 
     controls = new function() {
@@ -73,12 +75,12 @@ window.onload = function() {
 
     // Texture za tla (namesto modre ravnine)
     ///////////////////////////////////////////////////////////////////////////////////////
-    var floorTexture = new THREE.ImageUtils.loadTexture( 'textures/water.jpg' );
+    var floorTexture = new THREE.ImageUtils.loadTexture('textures/checkerboard.jpg');
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
     floorTexture.repeat.set( 25, 25 );
     // DoubleSide: render texture on both sides of mesh
     var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-    var floorGeometry = new THREE.PlaneGeometry(10, 10, 1, 1);
+    var floorGeometry = new THREE.PlaneGeometry(100, 100, 1, 1);
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -0.5 * Math.PI;
     floor.position.x = 15;
@@ -98,19 +100,18 @@ window.onload = function() {
     ladja.position.y = 2;
     ladja.position.z = 0;
 
-    scene.add(ladja);
+    //scene.add(ladja);
 
     // Dodamo model ladje
     ///////////////////////////////////////////////////////////////////////////////////////
+    var group = new THREE.Group()
     var loader = new THREE.OBJMTLLoader();
-    loader.load('models/ladja_majhna.obj', 'models/ladja_majhna.mtl', function (ladja_model) {
-        //ladja_model.scale.set(1, 1, 1);
-        //ladja3 = ladja_model;
-        ladja_model.name = "ladja_model";
-        scene.add(ladja_model);
-
-        //ladja_model.rotation.x = 0.2;
-        //ladja_model.rotation.y = -1.3;
+    loader.load('models/ladja_majhna.obj', 'models/ladja_majhna.mtl', function (object) {
+        object.scale.set(1, 1, 1);
+        object.name = "LADJEVJE";
+        object.translateY(1);
+        group.add(object);
+        scene.add(group);
     });
 
     // Ambientna svetloba.
@@ -193,13 +194,32 @@ window.onload = function() {
 
     // Renderiranje.
     ///////////////////////////////////////////////////////////////////////////////////////
+
     render();
     function render() {
         stats.update(); // Posodobi FPS-je.
-        
+        keyboard.update(); // Posodobi stanje tipkovnice.
+
+        // Ce ni pritisjena nobena smerna tipka, se ladjica pocasi pricne ustavljati.
+        if (!keyboard.pressed("left") && !keyboard.pressed("right") && !keyboard.pressed("up") && !keyboard.pressed("down")) {
+            if (controls.translacijaX > 0.0){
+                controls.translacijaX -= 0.005;
+            }
+            else if (controls.translacijaX < 0.0) {
+                controls.translacijaX += 0.005;
+            }
+            
+            if (controls.rotationY > 0.0){
+                controls.rotationY -= 0.0005;
+            }
+            else if (controls.rotationY < 0.0){
+                controls.rotationY += 0.0005;
+            }
+        }
+
         // rotate the cubes around its axes
         scene.traverse(function (e) {
-            if (e instanceof THREE.Mesh && e != ladja && e != floor && e != skyBox && e instanceof THREE.Group) {
+            if (e instanceof THREE.Mesh && e != ladja && e != floor && e != skyBox && e instanceof THREE.Group) { //  
 
                 e.rotation.x += controls.rotationSpeed;
                 e.rotation.y += controls.rotationSpeed;
@@ -208,12 +228,13 @@ window.onload = function() {
         });
         // Kontrole - premikanje ladje.
         ladja.translateX(controls.translacijaX);
+        group.translateX(controls.translacijaX);
         //cube.translateX(-controls.translacijaX);
         
         // Zavrti kocko po Y-osi, ce smo jo s smernimi tipkami zavrteli.
         ladja.rotation.y += controls.rotationY;
+        group.rotation.y += controls.rotationY;
         //console.log(controls.rotationY) // izpisuj "hitrost" vrtenja ladje.
-
         transformCamera();
 
         requestAnimationFrame(render);
@@ -229,12 +250,12 @@ window.onload = function() {
             camera.lookAt(ladja.position);
         } else if (cameraMode == 2){
             var relativeCameraOffset = new THREE.Vector3(-25,8,0);
-            var cameraOffset = relativeCameraOffset.applyMatrix4( ladja.matrixWorld );
+            var cameraOffset = relativeCameraOffset.applyMatrix4( group.matrixWorld );
 
             camera.position.x = cameraOffset.x;
             camera.position.y = cameraOffset.y;
             camera.position.z = cameraOffset.z;
-            camera.lookAt(ladja.position);
+            camera.lookAt(group.position);
         }
 
     }
@@ -281,8 +302,8 @@ function handleKeyDown(event) {
                 controls.rotationY -= 0.005;
             }
             break;
-        case 40:
-            if (controls.translacijaX > -0.01){
+        case 40: // Nazaj
+            if (controls.translacijaX > -0.1){
                 controls.translacijaX -= 0.05;
             }
             break;
@@ -290,12 +311,12 @@ function handleKeyDown(event) {
 }
 
 // Ko spustimo tipke.
-function handleKeyUp(event) {
+/*function handleKeyUp(event) {
     switch (event.keyCode) {
         case 37:
             //controls.speedzminus = 0.0;
             break;
-        case 38:
+        case 38: // Povecuj hitrost naprej.
             //controls.translacijaX = 0.0;
             break;
         case 39:
@@ -305,4 +326,4 @@ function handleKeyUp(event) {
             //controls.translacijaX = 0.0;
             break;
     }
-}
+}*/
