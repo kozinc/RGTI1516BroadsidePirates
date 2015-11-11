@@ -29,5 +29,6 @@ Pri izdelavi našega seminarja bomo v prvem delu predvidoma uporabili WebGL, Thr
 
 ## 1.3 Pogled
 Pogled v našo igro bo omogočen na dva načina, med katerimi bo mogoče prosto menjati:
+
 1. Pogled izza ladje - kamera bo vezana na zadnji del ladje in bo lokacijo in smer/rotacijo spreminjala skupaj z ladjo
 2. Pogled od zgoraj - kamera bo na ladjo gledala od zgoraj navzdol, z nagibom in bo na ladjo vezana le z lokacijo, smer bo statična, rotacijo pa bo lahko nadzoroval uporabnik.
