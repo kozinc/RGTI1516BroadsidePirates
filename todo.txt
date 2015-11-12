@@ -1,8 +1,8 @@
 1. Glavne stvari
-- streljanje in zivljene 
+- streljanje
 - nasprotniki (pot premikanja doloèimo mi)
   ko smo v bližni zaènejo streljat (na "vse" strani)
-- logika za streljanje (odštevanje življenj ipd.)
+- logika za streljanje (odštevanje življenj ipd.) + healthbar
 - model kopnega in "morja" + pristanišèa
 - collision detection za kopno in nasprotnike
 

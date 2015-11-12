@@ -7,11 +7,14 @@
 // Aljaž Kozina (kozinc@gmail.com)
 ///////////////////////////////////////////////////////////////////////////////////////
 
+// globalne spremenljivke
 var camera;
 var scene;
 var renderer;
 
 var cameraMode;
+
+var ladja;
 
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
@@ -73,7 +76,7 @@ window.onload = function () {
 
     // Dodamo model ladje
     ///////////////////////////////////////////////////////////////////////////////////////
-    var ladja = new Ladja(scene, "ladja_majhna");
+    ladja = new Ladja(scene, "ladja_majhna");
 
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -163,31 +166,8 @@ window.onload = function () {
     function render() {
         stats.update(); // Posodobi FPS-je.
         keyboard.update(); // Posodobi stanje tipkovnice.
-
         voda.update(); // Posodobi vodo.
 
-        if (keyboard.pressed("up")) {
-            ladja.moveForwardStart();
-        } else {
-            ladja.moveForwardStop();
-        }
-        if (keyboard.pressed("down")) {
-            ladja.moveBackStart();
-        } else {
-            ladja.moveBackStop();
-        }
-        if (keyboard.pressed("left")) {
-            ladja.turnLeftStart();
-        } else {
-            ladja.turnLeftStop()
-        }
-        if (keyboard.pressed("right")) {
-            ladja.turnRightStart();
-        } else {
-            ladja.turnRightStop();
-        }
-
-        //ostane lahko samo to ce uporabim listenerje
         ladja.updatePose();
 
         transformCamera();
@@ -243,12 +223,16 @@ function handleKeyDown(event) {
     var tmp_ladja = scene.getObjectByName("ladja_igralec");
     switch (event.keyCode) {
         case 37: // left arrow
+            ladja.turnLeftStart();
             break;
         case 38: // up arrow
+            ladja.moveForwardStart();
             break;
         case 39: // right arrow
+            ladja.turnRightStart();
             break;
         case 40: // down arrow
+            ladja.moveBackStart();
             break;
     }
 }
@@ -257,12 +241,16 @@ function handleKeyUp(event) {
     var tmp_ladja = scene.getObjectByName("ladja_igralec");
     switch (event.keyCode) {
         case 37: // left arrow
+            ladja.turnLeftStop();
             break;
         case 38: // up arrow
+            ladja.moveForwardStop();
             break;
         case 39: // right arrow
+            ladja.turnRightStop();
             break;
         case 40: // down arrow
+            ladja.moveBackStop();
             break;
     }
 }
