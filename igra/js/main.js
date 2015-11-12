@@ -28,10 +28,6 @@ window.onload = function () {
     // Ustvarimo kamero.
     ///////////////////////////////////////////////////////////////////////////////////////
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    /*camera.position.x = -30;
-     camera.position.y = 40;
-     camera.position.z = 30;
-     camera.lookAt(new THREE.Vector3(0, 0, 0));*/
     cameraMode = 2;
 
     // Ustvarimo 3D sceno, katera "drzi" vse objekte, osvetljevanje in kamere.
@@ -77,7 +73,11 @@ window.onload = function () {
     // Vir svetlobe.
     ///////////////////////////////////////////////////////////////////////////////////////
 
-    // zaenkrat dodan skupaj z ladjico, morda bi bilo bolje luc prestaviti sem.
+    var directionalLight = new THREE.DirectionalLight(0xffecb3, 0.8);
+    directionalLight.position.set(600, 500, -600);
+    scene.add(directionalLight);
+
+    // dodan tudi skupaj z ladjico, morda bi bilo bolje luc prestaviti sem.
 
     // Skybox
     ///////////////////////////////////////////////////////////////////////////////////////

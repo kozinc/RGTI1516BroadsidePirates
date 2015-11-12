@@ -18,7 +18,7 @@ function Water(scene, ms_Renderer, ms_Camera) {
     //this.ms_Canvas.html(this.ms_Renderer.domElement);
 
     // Add light
-    var directionalLight = new THREE.DirectionalLight(0xffff55, 1);
+    var directionalLight = new THREE.DirectionalLight(0xffe699, 0.5);
     directionalLight.position.set(-600, 500, 600);
     scene.add(directionalLight);
     
