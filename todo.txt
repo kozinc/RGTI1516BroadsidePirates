@@ -1,0 +1,18 @@
+1. Glavne stvari
+- streljanje in zivljene 
+- nasprotniki (pot premikanja doloèimo mi)
+  ko smo v bližni zaènejo streljat (na "vse" strani)
+- logika za streljanje (odštevanje življenj ipd.)
+- model kopnega in "morja" + pristanišèa
+- collision detection za kopno in nasprotnike
+
+gameplay: 
+- igralec zaène nekje v morju z 0 cekini
+- med igro zbira cekine (nakljuèno generirani po morju)
+- kadarkoli se lahko vrne v pristanišèe da shrani svoje cekine (prištejejo se k toèkam)
+- pristanešèe je (zaenkrat) samo eno, ob vsakem obisku, pa se na novo generirajo cekini in nasprotniki
+
+2. Dodatne
+- partikli med premikanje
+
+
