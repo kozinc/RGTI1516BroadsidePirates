@@ -112,7 +112,7 @@ window.onload = function () {
         }));
     var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
     var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-    //scene.add(skyBox);
+    scene.add(skyBox);
 
     // GUI kontrole.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -170,9 +170,10 @@ window.onload = function () {
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
     function transformCamera() {
         if (cameraMode == 1) {
-            camera.position.x = -30;
-            camera.position.y = 40;
-            camera.position.z = 30;
+            
+            camera.position.x = ladja.model.position.x -30;
+            camera.position.y = ladja.model.position.y +40;
+            camera.position.z = ladja.model.position.z +30;
             camera.lookAt(ladja.model.position);
         } else if (cameraMode == 2) {
             var relativeCameraOffset = new THREE.Vector3(20, 10, 0);
@@ -183,6 +184,10 @@ window.onload = function () {
             camera.position.z = cameraOffset.z;
             camera.lookAt(ladja.model.position);
         }
+        skyBox.position.x = camera.position.x;
+        skyBox.position.y = camera.position.y;
+        skyBox.position.z = camera.position.z;
+
     }
 };
 
