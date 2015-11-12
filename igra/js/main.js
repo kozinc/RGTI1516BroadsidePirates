@@ -45,6 +45,9 @@ window.onload = function () {
     renderer.shadowMapEnabled = true;
     document.getElementById("WebGL-output").appendChild(renderer.domElement);
 
+    // Dodamo vodo - morje.
+    var voda = new Water(scene, renderer, camera);
+
     // Dodamo osi
     ///////////////////////////////////////////////////////////////////////////////////////
     var axes = new THREE.AxisHelper(10);
@@ -66,7 +69,7 @@ window.onload = function () {
     morje.position.y = 0;
     morje.position.z = 0;
     morje.receiveShadow = true;
-    scene.add(morje);
+    //scene.add(morje);
 
     // Dodamo model ladje
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +102,7 @@ window.onload = function () {
 
     // Skybox
     ///////////////////////////////////////////////////////////////////////////////////////
-    var imagePrefix = "textures/skybox_";
+    /*var imagePrefix = "textures/skybox_";
     var directions = ["front", "back", "up", "down", "left", "right"];
     var imageSuffix = ".jpg";
     var skyGeometry = new THREE.CubeGeometry(500, 500, 500);
@@ -112,6 +115,30 @@ window.onload = function () {
         }));
     var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
     var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
+    scene.add(skyBox);*/
+
+    var aCubeMap = THREE.ImageUtils.loadTextureCube([
+          'textures/px.jpg', // px
+          'textures/nx.jpg', // nx
+          'textures/py.jpg', // py
+          'textures/ny.jpg', // ny
+          'textures/pz.jpg', // pz
+          'textures/nz.jpg' // nz
+        ]);
+    aCubeMap.format = THREE.RGBFormat;
+
+    var aShader = THREE.ShaderLib['cube'];
+    aShader.uniforms['tCube'].value = aCubeMap;
+
+    var aSkyBoxMaterial = new THREE.ShaderMaterial({
+      fragmentShader: aShader.fragmentShader,
+      vertexShader: aShader.vertexShader,
+      uniforms: aShader.uniforms,
+      depthWrite: false,
+      side: THREE.BackSide
+    });
+
+    var skyBox = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), aSkyBoxMaterial);
     scene.add(skyBox);
 
     // GUI kontrole.
@@ -136,6 +163,8 @@ window.onload = function () {
     function render() {
         stats.update(); // Posodobi FPS-je.
         keyboard.update(); // Posodobi stanje tipkovnice.
+
+        voda.update(); // Posodobi vodo.
 
         if (keyboard.pressed("up")) {
             ladja.moveForwardStart();
@@ -176,7 +205,7 @@ window.onload = function () {
             camera.position.z = ladja.model.position.z +30;
             camera.lookAt(ladja.model.position);
         } else if (cameraMode == 2) {
-            var relativeCameraOffset = new THREE.Vector3(20, 10, 0);
+            var relativeCameraOffset = new THREE.Vector3(20, 7, 0);
             var cameraOffset = relativeCameraOffset.applyMatrix4(ladja.model.matrixWorld);
 
             camera.position.x = cameraOffset.x;
