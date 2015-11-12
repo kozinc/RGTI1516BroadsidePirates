@@ -20,17 +20,21 @@ function Ladja(scene, model_name) {
     this.accTurnStop = 0.0005;
     this.velTurnMax = 0.01;
 
+    this.velRoll = 0.003;
+    this.rollMax = 0.1;
+
     // Konstruktor
     var group = new THREE.Group();
     this.model = group;
+    this.model.name = 'ladja_igralec';
+    this.model.rotation.order = 'YXZ';
     scene.add(this.model);
 
     var loader = new THREE.OBJMTLLoader();
     loader.load("models/".concat(model_name).concat(".obj"), "models/".concat(model_name).concat(".mtl"),
         function (object) {
             object.scale.set(1, 1, 1);
-            object.name = 'ladja_igralec';
-            object.translateY(1);
+            object.translateY(0.7);
             object.children.forEach(function (tmp1) {
                 tmp1.children.forEach(function (tmp2) {
                     tmp2.castShadow = true;
@@ -74,7 +78,7 @@ Ladja.prototype.updatePose = function () {
         }
     } else if (this.movingBack) {
         if (this.vel > -this.velBackMax) {
-            this.vel -= this.accBack;
+            this.vel += -this.accBack;
         }
     } else {
         var sign = (this.vel >= 0) ? 1 : -1;
@@ -88,21 +92,41 @@ Ladja.prototype.updatePose = function () {
     }
 
     if (this.turningLeft) {
+        // turn
         if (this.velTurn < this.velTurnMax) {
             this.velTurn += this.accTurn;
         }
+        // roll
+        if (this.model.rotation.x > -this.rollMax) {
+            this.model.rotation.x -= this.velRoll;
+        }
     } else if (this.turningRight) {
+        // turn
         if (this.velTurn > -this.velTurnMax) {
             this.velTurn -= this.accTurn;
         }
-    } else {
-        var sign = (this.velTurn >= 0) ? 1 : -1;
-        var velMag = Math.abs(this.velTurn);
-        if (velMag > 0) {
-            this.velTurn -= sign*this.accTurnStop;
+        // roll
+        if (this.model.rotation.x < this.rollMax) {
+            this.model.rotation.x += this.velRoll;
         }
-        if (velMag < this.accTurnStop) {
+    } else {
+        // turn
+        var signTurn = (this.velTurn >= 0) ? 1 : -1;
+        var velMagTurn = Math.abs(this.velTurn);
+        if (velMagTurn > 0) {
+            this.velTurn -= signTurn*this.accTurnStop;
+        }
+        if (velMagTurn < this.accTurnStop) {
             this.velTurn = 0.0;
+        }
+        // roll
+        var signRoll = (this.model.rotation.x >= 0) ? 1 : -1;
+        var magRoll = Math.abs(this.model.rotation.x);
+        if (magRoll > 0) {
+            this.model.rotation.x -= signRoll*this.velRoll;
+        }
+        if (magRoll < this.velRoll) {
+            this.model.rotation.x = 0.0;
         }
     }
 
