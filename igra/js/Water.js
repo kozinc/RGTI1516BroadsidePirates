@@ -18,8 +18,8 @@ function Water(scene, ms_Renderer, ms_Camera) {
     //this.ms_Canvas.html(this.ms_Renderer.domElement);
 
     // Add light
-    var directionalLight = new THREE.DirectionalLight(0xffff55, 1);
-    directionalLight.position.set(-600, 300, 600);
+    var directionalLight = new THREE.DirectionalLight(0xffe699, 0.5);
+    directionalLight.position.set(-600, 500, 600);
     scene.add(directionalLight);
     
     // Load textures        
@@ -39,7 +39,7 @@ function Water(scene, ms_Renderer, ms_Camera) {
         side: THREE.DoubleSide
     });
     var aMeshMirror = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(200, 200, 10, 10), 
+        new THREE.PlaneBufferGeometry(400, 400, 10, 10),
         this.ms_Water.material
     );
     aMeshMirror.add(this.ms_Water);
