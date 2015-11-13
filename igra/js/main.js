@@ -238,10 +238,33 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// Ustreli s topom ko pritisnemo SPACE.
+function ustreli() {
+    // Pridobimo ladjo, da bomo lahko uporabili njene koordinate.
+    var tmp_ladja = scene.getObjectByName("ladja_igralec");
+    // Dodamo sfero - kroglo iz topa
+    ///////////////////////////////////////////////////////////////////////////////////////
+    var sphereGeometry = new THREE.SphereGeometry(0.5, 20, 20);
+    var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+    var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
+    // position the sphere
+    sphere.position.x = tmp_ladja.position.x;
+    sphere.position.y = tmp_ladja.position.y;
+    sphere.position.z = tmp_ladja.position.z;
+    sphere.castShadow = true;
+
+    // add the sphere to the scene
+    scene.add(sphere);
+}
+
 // Ko pritisnemo tipke.
 function handleKeyDown(event) {
     var tmp_ladja = scene.getObjectByName("ladja_igralec");
     switch (event.keyCode) {
+        case 32: // SPACE
+            ustreli();
+            break;
         case 37: // left arrow
             break;
         case 38: // up arrow
