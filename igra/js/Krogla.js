@@ -39,5 +39,6 @@ Krogla.prototype.update = function () {
     }
 };
 Krogla.prototype.checkDelete = function () {
-    return this.model.position.y < -this.radius;
+    // vrne true, ce je kroglo potrebno odstraniti
+    return (this.model.position.y < -this.radius);
 };

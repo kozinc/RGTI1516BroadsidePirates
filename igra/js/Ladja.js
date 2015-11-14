@@ -162,7 +162,10 @@ Ladja.prototype.update = function () {
     this.krogleList.forEach(function (tmp) {
         tmp.update();
     });
-    // TODO: odstrani potopljene krogle
+    // posodobi tabelo krogel (odstrani prvo, ce je potrebno)
+    if (this.krogleList.length > 0 && this.krogleList[0].checkDelete()) {
+        this.krogleList.shift();
+    }
 };
 
 Ladja.prototype.checkCollisions = function () {
