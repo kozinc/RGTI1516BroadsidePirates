@@ -1,4 +1,5 @@
 // preostala koda, ki ni v uporabi, ampak morda pride prav
+///////////////////////////////////////////////////////////////////////////////////////
 
 var morjeTexture = new THREE.ImageUtils.loadTexture('textures/checkerboard.jpg');
 morjeTexture.wrapS = morjeTexture.wrapT = THREE.RepeatWrapping;
@@ -16,6 +17,7 @@ morje.position.z = 0;
 morje.receiveShadow = true;
 scene.add(morje);
 
+///////////////////////////////////////////////////////////////////////////////////////
 /*var imagePrefix = "textures/skybox_";
  var directions = ["front", "back", "up", "down", "left", "right"];
  var imageSuffix = ".jpg";
@@ -31,6 +33,7 @@ scene.add(morje);
  var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
  scene.add(skyBox);*/
 
+///////////////////////////////////////////////////////////////////////////////////////
 var directionalLight = new THREE.DirectionalLight(0xffffff);
 directionalLight.position.set(40, 50, -20);
 directionalLight.castShadow = true;
@@ -46,3 +49,22 @@ directionalLight.shadowMapHeight = 2048;
 directionalLight.shadowMapWidth = 2048;
 
 scene.add(directionalLight);
+
+///////////////////////////////////////////////////////////////////////////////////////
+// debug crta
+var lineMat = new THREE.LineBasicMaterial({color: 0x000000});
+var lineGeo = new THREE.Geometry();
+lineGeo.vertices.push(
+    new THREE.Vector3(0,5,0),
+    new THREE.Vector3(-5,5,0)
+);
+var lineDebug = new THREE.Line(lineGeo, lineMat);
+lineDebug.name = "lineDebug";
+scene.add(lineDebug);
+
+var debug = this.scene.getObjectByName("lineDebug");
+//debug.rotation.y = this.model.rotation.y;
+debug.geometry.vertices[1] = direction;
+debug.geometry.verticesNeedUpdate = true;
+
+///////////////////////////////////////////////////////////////////////////////////////

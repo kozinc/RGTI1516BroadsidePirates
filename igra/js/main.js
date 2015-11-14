@@ -123,10 +123,17 @@ window.onload = function () {
                 cameraMode = 1;
             }
         };
+        // zapisi lokacijo ladje.
+        this.printPosition = function () {
+            console.log(ladja.model.position.x.toFixed(3) + ", " +
+                ladja.model.position.y.toFixed(3) + ", " +
+                ladja.model.position.z.toFixed(3));
+        }
     };
 
     var gui = new dat.GUI();
     gui.add(guiControls, 'zamenjajKamero');
+    gui.add(guiControls, 'printPosition');
 
     // Renderiranje.
     ///////////////////////////////////////////////////////////////////////////////////////

@@ -135,7 +135,6 @@ Ladja.prototype.updatePose = function () {
     this.model.translateX(-this.vel);
     this.model.rotation.y += this.velTurn;
 
-    //var collisions = this.checkCollisions();
     if (this.checkCollisions()) {
         // ce pride do kolizije, potem iznici premik in rotacijo
         this.model.translateX(this.vel);
