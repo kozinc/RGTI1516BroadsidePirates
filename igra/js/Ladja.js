@@ -1,5 +1,8 @@
 function Ladja(scene, model_name) {
     // Lastnosti
+    this.scene = scene;
+    // this.collisionObjectList = [];
+
     this.model;
     this.vel = 0.0;
     this.velTurn = 0.0;
@@ -132,4 +135,24 @@ Ladja.prototype.updatePose = function () {
 
     this.model.translateX(-this.vel);
     this.model.rotation.y += this.velTurn;
+
+    /*var collisions = this.checkCollisions();
+    if (collisions.length > 0) {
+        console.log("hit");
+    }*/
+};
+
+Ladja.prototype.checkCollisions = function () {
+    var origin = this.model.position.clone();
+    var direction = new THREE.Vector3(-1,0,0);
+    direction.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+
+    var ray = new THREE.Raycaster(origin, direction);
+    //return ray.intersectObject(this.scene.getObjectByName("kopno"));
+    // return ray.intersectObjects(this.collisionObjectList);
+    // return ray.intersectObjects([]);
+};
+
+Ladja.prototype.addCollisionObject = function (object) {
+    this.collisionObjectList.push(object);
 };

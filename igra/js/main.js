@@ -59,12 +59,14 @@ window.onload = function () {
     var loader = new THREE.OBJMTLLoader();
     loader.load("models/kopno.obj", "models/kopno.mtl",
         function (object) {
+            object.name = "kopno";
             scene.add(object);
         });
 
     // Dodamo model ladje
     ///////////////////////////////////////////////////////////////////////////////////////
     ladja = new Ladja(scene, "ladja_majhna");
+    //ladja.addCollisionObject(scene.getObjectByName("kopno"));
 
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
