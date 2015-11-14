@@ -1,6 +1,9 @@
 function Ladja(scene, model_name) {
     // Lastnosti
+    this.scene = scene;
+
     this.collisionObjectList = [];
+    this.krogleList = [];
 
     this.model;
     this.vel = 0.0;
@@ -47,6 +50,17 @@ function Ladja(scene, model_name) {
         });
 }
 // Metode
+Ladja.prototype.shootForward = function () {
+    var origin = this.model.position.clone();
+    origin.y += 1;
+    var directionFwd = new THREE.Vector3(-1,0.15,0);
+    directionFwd.normalize();
+    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+
+    var tmpKrogla = new Krogla(this.scene, 0.8, origin, directionFwd);
+    this.krogleList.push(tmpKrogla);
+};
+
 Ladja.prototype.moveForwardStart = function () {
     this.movingFwd = true;
 };
@@ -73,7 +87,8 @@ Ladja.prototype.turnRightStop = function () {
     this.turningRight = false;
 };
 
-Ladja.prototype.updatePose = function () {
+Ladja.prototype.update = function () {
+    // posodobi lego ladje
     if (this.movingFwd && this.vel >= 0) {
         if (this.vel < this.velFwdMax) {
             this.vel += this.accFwd;
@@ -142,6 +157,12 @@ Ladja.prototype.updatePose = function () {
         this.vel = 0.0;
         this.velTurn = 0.0;
     }
+
+    // posodobi lego krogel
+    this.krogleList.forEach(function (tmp) {
+        tmp.update();
+    });
+    // TODO: odstrani potopljene krogle
 };
 
 Ladja.prototype.checkCollisions = function () {

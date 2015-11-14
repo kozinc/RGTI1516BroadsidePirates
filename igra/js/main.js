@@ -14,8 +14,6 @@ var renderer;
 
 var cameraMode;
 
-var seznamKrogel = [];
-
 var ladja;
 
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
@@ -143,10 +141,9 @@ window.onload = function () {
         keyboard.update(); // Posodobi stanje tipkovnice.
         voda.update(); // Posodobi vodo.
 
-        ladja.updatePose();
+        ladja.update(); // Posodobi ladjo in njene krogle
 
         transformCamera();
-        posodabljajLetKrogel();
 
         requestAnimationFrame(render);
         renderer.render(scene, camera);
@@ -155,7 +152,6 @@ window.onload = function () {
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
     function transformCamera() {
         if (cameraMode == 1) {
-            
             camera.position.x = ladja.model.position.x -30;
             camera.position.y = ladja.model.position.y +40;
             camera.position.z = ladja.model.position.z +30;
@@ -194,36 +190,11 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function posodabljajLetKrogel(){
-    seznamKrogel.forEach(function(krogla){
-        krogla[0].translateX(1);
-        krogla[0].translateZ(1);
-        /*
-        var razdaljaKrogle = Math.sqrt(Math.pow(krogla[1].position.x - krogla[0].position.x, 2) + Math.pow(krogla[1].position.y - krogla[0].position.y, 2));
-        //console.log(razdaljaKrogle);
-        // Ce je dlje od nekatere dolzine, potem jo izbrisi iz seznama krogle (z metodo .pop ???) in scene!
-        if (razdaljaKrogle > 50) {
-            // seznamKrogel.izbrisi(krogla);
-            scene.remove(krogla);
-        }
-        */
-    });
-}
-
-// Ustreli s topom ko pritisnemo SPACE.
-function ustreli() {
-    var tmp_ladja = scene.getObjectByName("ladja_igralec"); // Pridobimo ladjo.
-    var krogla = new CanonBall(tmp_ladja); // Ustvari kroglo.
-    seznamKrogel.push([krogla, tmp_ladja]); // Dodaj kroglo in ladja v seznam krogle.
-    scene.add(krogla); // Dodaj kroglo v sceno.
-}
-
 // Ko pritisnemo tipke.
 function handleKeyDown(event) {
-    var tmp_ladja = scene.getObjectByName("ladja_igralec");
     switch (event.keyCode) {
         case 32: // SPACE
-            ustreli();
+            ladja.shootForward();
             break;
         case 37: // left arrow
             ladja.turnLeftStart();
@@ -241,7 +212,6 @@ function handleKeyDown(event) {
 }
 // Ko spustimo tipke.
 function handleKeyUp(event) {
-    var tmp_ladja = scene.getObjectByName("ladja_igralec");
     switch (event.keyCode) {
         case 37: // left arrow
             ladja.turnLeftStop();
