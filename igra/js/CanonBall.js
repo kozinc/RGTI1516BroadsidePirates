@@ -2,7 +2,7 @@ function CanonBall(tmp_ladja) {
     var sphereGeometry = new THREE.SphereGeometry(0.5, 20, 20);
     var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x000000});
     var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
+    // definiramo gravitacijski pospešek
     Object.defineProperty(sphere, "downwardMotion", {
                             value : -0.1,
                             writable : true,
@@ -10,6 +10,13 @@ function CanonBall(tmp_ladja) {
                             configurable: true
                             });
 
+    // definiramo razdaljo od ladje
+    Object.defineProperty(sphere, "razdaljaKrogle", {
+                            value : 0.0,
+                            writable : true,
+                            enumerable : true,
+                            configurable: true
+                            });
     //console.log(krogle);
     // position the sphere
     sphere.position.x = tmp_ladja.position.x;

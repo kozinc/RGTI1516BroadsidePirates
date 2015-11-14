@@ -200,15 +200,19 @@ function posodabljajLetKrogel(){
         krogla[0].translateZ(1);
         krogla[0].downwardMotion += 0.01;
         krogla[0].position.y -= krogla[0].downwardMotion;
-        /*
-        var razdaljaKrogle = Math.sqrt(Math.pow(krogla[1].position.x - krogla[0].position.x, 2) + Math.pow(krogla[1].position.y - krogla[0].position.y, 2));
+        krogla[0].razdaljaKrogle += 1;
+
         //console.log(razdaljaKrogle);
         // Ce je dlje od nekatere dolzine, potem jo izbrisi iz seznama krogle (z metodo .pop ???) in scene!
-        if (razdaljaKrogle > 50) {
+        if (krogla[0].razdaljaKrogle > 30) {
             // seznamKrogel.izbrisi(krogla);
-            scene.remove(krogla);
+            //console.log(krogla[0].razdaljaKrogle);
+            scene.remove(krogla[0]);  
+            seznamKrogel.shift(); //odstrani kroglo[0] (prvi element) iz seznama
         }
-        */
+        //The shift() method removes the first item of an array, and returns that item.
+        //The unshift() method adds new items to the beginning of an array, and returns the new length.
+        //console.log(seznamKrogel.length);
     });
 }
 
