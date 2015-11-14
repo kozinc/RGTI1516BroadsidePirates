@@ -1,6 +1,5 @@
 function Ladja(scene, model_name) {
     // Lastnosti
-    //this.scene = scene;
     this.collisionObjectList = [];
 
     this.model;
@@ -75,11 +74,11 @@ Ladja.prototype.turnRightStop = function () {
 };
 
 Ladja.prototype.updatePose = function () {
-    if (this.movingFwd) {
+    if (this.movingFwd && this.vel >= 0) {
         if (this.vel < this.velFwdMax) {
             this.vel += this.accFwd;
         }
-    } else if (this.movingBack) {
+    } else if (this.movingBack && this.vel <= 0) {
         if (this.vel > -this.velBackMax) {
             this.vel += -this.accBack;
         }
@@ -136,22 +135,28 @@ Ladja.prototype.updatePose = function () {
     this.model.translateX(-this.vel);
     this.model.rotation.y += this.velTurn;
 
-    var collisions = this.checkCollisions();
-    if (collisions.length > 0) {
+    //var collisions = this.checkCollisions();
+    if (this.checkCollisions()) {
         // ce pride do kolizije, potem iznici premik in rotacijo
         this.model.translateX(this.vel);
         this.model.rotation.y -= this.velTurn;
-        //console.log("hit");
+        this.vel = 0.0;
+        this.velTurn = 0.0;
     }
 };
 
 Ladja.prototype.checkCollisions = function () {
     var origin = this.model.position.clone();
-    var direction = new THREE.Vector3(-1,0,0);
-    direction.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+    var directionFwd = new THREE.Vector3(-1,0,0);
+    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+    var directionBack = new THREE.Vector3(1,0,0);
+    directionBack.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
 
-    var ray = new THREE.Raycaster(origin, direction, 0, 1.8);
-    return ray.intersectObjects(this.collisionObjectList);
+    var rayFwd = new THREE.Raycaster(origin, directionFwd, 0, 1.8);
+    var rayBack = new THREE.Raycaster(origin, directionBack, 0, 1.8);
+
+    return (rayFwd.intersectObjects(this.collisionObjectList).length > 0 ||
+        rayBack.intersectObjects(this.collisionObjectList).length > 0);
 };
 
 Ladja.prototype.addCollisionObject = function (object) {
