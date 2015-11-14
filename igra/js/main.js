@@ -198,6 +198,8 @@ function posodabljajLetKrogel(){
     seznamKrogel.forEach(function(krogla){
         krogla[0].translateX(1);
         krogla[0].translateZ(1);
+        krogla[0].downwardMotion += 0.01;
+        krogla[0].position.y -= krogla[0].downwardMotion;
         /*
         var razdaljaKrogle = Math.sqrt(Math.pow(krogla[1].position.x - krogla[0].position.x, 2) + Math.pow(krogla[1].position.y - krogla[0].position.y, 2));
         //console.log(razdaljaKrogle);
