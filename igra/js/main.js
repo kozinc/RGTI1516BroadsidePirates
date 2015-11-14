@@ -51,6 +51,10 @@ window.onload = function () {
     var axes = new THREE.AxisHelper(10);
     scene.add(axes);
 
+    // Dodamo model ladje
+    ///////////////////////////////////////////////////////////////////////////////////////
+    ladja = new Ladja(scene, "ladja_majhna");
+
     // Dodamo morje in kopno
     ///////////////////////////////////////////////////////////////////////////////////////
     var voda = new Water(scene, renderer, camera);
@@ -61,12 +65,11 @@ window.onload = function () {
         function (object) {
             object.name = "kopno";
             scene.add(object);
-        });
 
-    // Dodamo model ladje
-    ///////////////////////////////////////////////////////////////////////////////////////
-    ladja = new Ladja(scene, "ladja_majhna");
-    //ladja.addCollisionObject(scene.getObjectByName("kopno"));
+            object.children.forEach(function (tmp) {
+                ladja.addCollisionObject(tmp);
+            });
+        });
 
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
