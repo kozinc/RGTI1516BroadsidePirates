@@ -14,6 +14,8 @@ var renderer;
 
 var cameraMode;
 
+var seznamKrogel = [];
+
 var ladja;
 
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
@@ -132,6 +134,7 @@ window.onload = function () {
         ladja.updatePose();
 
         transformCamera();
+        posodabljajLetKrogel();
 
         requestAnimationFrame(render);
         renderer.render(scene, camera);
@@ -179,24 +182,28 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function posodabljajLetKrogel(){
+    seznamKrogel.forEach(function(krogla){
+        krogla[0].translateX(1);
+        krogla[0].translateZ(1);
+        /*
+        var razdaljaKrogle = Math.sqrt(Math.pow(krogla[1].position.x - krogla[0].position.x, 2) + Math.pow(krogla[1].position.y - krogla[0].position.y, 2));
+        //console.log(razdaljaKrogle);
+        // Ce je dlje od nekatere dolzine, potem jo izbrisi iz seznama krogle (z metodo .pop ???) in scene!
+        if (razdaljaKrogle > 50) {
+            // seznamKrogel.izbrisi(krogla);
+            scene.remove(krogla);
+        }
+        */
+    });
+}
+
 // Ustreli s topom ko pritisnemo SPACE.
 function ustreli() {
-    // Pridobimo ladjo, da bomo lahko uporabili njene koordinate.
-    var tmp_ladja = scene.getObjectByName("ladja_igralec");
-    // Dodamo sfero - kroglo iz topa
-    ///////////////////////////////////////////////////////////////////////////////////////
-    var sphereGeometry = new THREE.SphereGeometry(0.5, 20, 20);
-    var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
-    var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
-    // position the sphere
-    sphere.position.x = tmp_ladja.position.x;
-    sphere.position.y = tmp_ladja.position.y;
-    sphere.position.z = tmp_ladja.position.z;
-    sphere.castShadow = true;
-
-    // add the sphere to the scene
-    scene.add(sphere);
+    var tmp_ladja = scene.getObjectByName("ladja_igralec"); // Pridobimo ladjo.
+    var krogla = new CanonBall(tmp_ladja); // Ustvari kroglo.
+    seznamKrogel.push([krogla, tmp_ladja]); // Dodaj kroglo in ladja v seznam krogle.
+    scene.add(krogla); // Dodaj kroglo v sceno.
 }
 
 // Ko pritisnemo tipke.
