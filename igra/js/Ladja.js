@@ -1,11 +1,11 @@
-function Ladja(scene, model_name) {
-    // Lastnosti
-    this.scene = scene;
+function Ladja() {
+    // Dedovanje (klici konstruktor razreda Object3D)
+    THREE.Object3D.call(this);
 
+    // Lastnosti
     this.collisionObjectList = [];
     this.krogleList = [];
 
-    this.model;
     this.vel = 0.0;
     this.velTurn = 0.0;
 
@@ -29,35 +29,31 @@ function Ladja(scene, model_name) {
     this.rollMax = 0.1;
 
     // Konstruktor
-    var group = new THREE.Group();
-    this.model = group;
-    this.model.name = 'ladja_igralec';
-    this.model.rotation.order = 'YXZ';
-    scene.add(this.model);
-
-    var loader = new THREE.OBJMTLLoader();
-    loader.load("models/".concat(model_name).concat(".obj"), "models/".concat(model_name).concat(".mtl"),
-        function (object) {
-            object.scale.set(1, 1, 1);
-            object.translateY(0.7);
-            object.children.forEach(function (tmp1) {
-                tmp1.children.forEach(function (tmp2) {
-                    tmp2.castShadow = true;
-                    tmp2.receiveShadow = true;
-                })
-            });
-            group.add(object);
-        });
+    this.name = "ladja_".concat(this.id.toString());
+    this.rotation.order = 'YXZ';
+    this.translateY(0.7);
+    this.children.forEach(function (tmp1) {
+        tmp1.children.forEach(function (tmp2) {
+            tmp2.castShadow = true;
+            tmp2.receiveShadow = true;
+        })
+    });
 }
+// Dedovanje (nastavi metode in konstruktor)
+Ladja.prototype = Object.create(THREE.Object3D.prototype);
+Ladja.prototype.constructor = Ladja;
+
 // Metode
 Ladja.prototype.shootForward = function () {
-    var origin = this.model.position.clone();
+    var origin = this.position.clone();
     origin.y += 1;
     var directionFwd = new THREE.Vector3(-1,0.15,0);
     directionFwd.normalize();
-    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
-    var tmpKrogla = new Krogla(this.scene, 0.8, origin, directionFwd);
+    var tmpKrogla = new Krogla(0.8, origin, directionFwd);
+
+    this.parent.add(tmpKrogla);
     this.krogleList.push(tmpKrogla);
 };
 
@@ -114,8 +110,8 @@ Ladja.prototype.update = function () {
             this.velTurn += this.accTurn;
         }
         // roll
-        if (this.model.rotation.x > -this.rollMax) {
-            this.model.rotation.x -= this.velRoll;
+        if (this.rotation.x > -this.rollMax) {
+            this.rotation.x -= this.velRoll;
         }
     } else if (this.turningRight) {
         // turn
@@ -123,8 +119,8 @@ Ladja.prototype.update = function () {
             this.velTurn -= this.accTurn;
         }
         // roll
-        if (this.model.rotation.x < this.rollMax) {
-            this.model.rotation.x += this.velRoll;
+        if (this.rotation.x < this.rollMax) {
+            this.rotation.x += this.velRoll;
         }
     } else {
         // turn
@@ -137,23 +133,23 @@ Ladja.prototype.update = function () {
             this.velTurn = 0.0;
         }
         // roll
-        var signRoll = (this.model.rotation.x >= 0) ? 1 : -1;
-        var magRoll = Math.abs(this.model.rotation.x);
+        var signRoll = (this.rotation.x >= 0) ? 1 : -1;
+        var magRoll = Math.abs(this.rotation.x);
         if (magRoll > 0) {
-            this.model.rotation.x -= signRoll*this.velRoll;
+            this.rotation.x -= signRoll*this.velRoll;
         }
         if (magRoll < this.velRoll) {
-            this.model.rotation.x = 0.0;
+            this.rotation.x = 0.0;
         }
     }
 
-    this.model.translateX(-this.vel);
-    this.model.rotation.y += this.velTurn;
+    this.translateX(-this.vel);
+    this.rotation.y += this.velTurn;
 
     if (this.checkCollisions()) {
         // ce pride do kolizije, potem iznici premik in rotacijo
-        this.model.translateX(this.vel);
-        this.model.rotation.y -= this.velTurn;
+        this.translateX(this.vel);
+        this.rotation.y -= this.velTurn;
         this.vel = 0.0;
         this.velTurn = 0.0;
     }
@@ -163,23 +159,24 @@ Ladja.prototype.update = function () {
         tmp.update();
     });
     // posodobi tabelo krogel (odstrani prvo, ce je potrebno)
-    if (this.krogleList.length > 0 && this.krogleList[0].checkDelete()) {
+    if (this.krogleList.length > 0 && this.krogleList[0].readyToDelete) {
         this.krogleList.shift();
     }
 };
 
 Ladja.prototype.checkCollisions = function () {
-    var origin = this.model.position.clone();
+    var origin = this.position.clone();
     var directionFwd = new THREE.Vector3(-1,0,0);
-    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
     var directionBack = new THREE.Vector3(1,0,0);
-    directionBack.applyAxisAngle(new THREE.Vector3(0,1,0), this.model.rotation.y);
+    directionBack.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
     var rayFwd = new THREE.Raycaster(origin, directionFwd, 0, 1.8);
     var rayBack = new THREE.Raycaster(origin, directionBack, 0, 1.8);
 
-    return (rayFwd.intersectObjects(this.collisionObjectList).length > 0 ||
-        rayBack.intersectObjects(this.collisionObjectList).length > 0);
+    var intersectListFwd = rayFwd.intersectObjects(this.collisionObjectList, true);
+    var intersectListBack = rayBack.intersectObjects(this.collisionObjectList, true);
+    return (intersectListFwd.length > 0 || intersectListBack.length > 0);
 };
 
 Ladja.prototype.addCollisionObject = function (object) {

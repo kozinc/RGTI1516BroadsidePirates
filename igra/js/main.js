@@ -13,8 +13,8 @@ var scene;
 var renderer;
 
 var cameraMode;
-
 var ladja;
+var loader;
 
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
@@ -24,6 +24,7 @@ window.onload = function () {
     // Inicializacija
     var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
     var keyboard = new KeyboardState();
+    loader = new THREE.OBJMTLLoader();
 
     // Ustvarimo kamero.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -33,6 +34,7 @@ window.onload = function () {
     // Ustvarimo 3D sceno, katera "drzi" vse objekte, osvetljevanje in kamere.
     ///////////////////////////////////////////////////////////////////////////////////////
     scene = new THREE.Scene();
+    console.log(scene.parent);
 
     // Ustvarimo "render", ki skrbi za izris objektov za doloceno pozicijo/kot kamere.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -46,27 +48,28 @@ window.onload = function () {
 
     // Dodamo osi
     ///////////////////////////////////////////////////////////////////////////////////////
-    var axes = new THREE.AxisHelper(10);
-    scene.add(axes);
+    /*var axes = new THREE.AxisHelper(10);
+    scene.add(axes);*/
 
     // Dodamo model ladje
     ///////////////////////////////////////////////////////////////////////////////////////
-    ladja = new Ladja(scene, "ladja_majhna");
+    ladja = new Ladja();
+    scene.add(ladja);
+    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+        function (object) {
+            ladja.add(object);
+        });
 
     // Dodamo morje in kopno
     ///////////////////////////////////////////////////////////////////////////////////////
     var voda = new Water(scene, renderer, camera);
 
     // Dodamo kopno
-    var loader = new THREE.OBJMTLLoader();
     loader.load("models/kopno.obj", "models/kopno.mtl",
         function (object) {
             object.name = "kopno";
             scene.add(object);
-
-            object.children.forEach(function (tmp) {
-                ladja.addCollisionObject(tmp);
-            });
+            ladja.addCollisionObject(object);
         });
 
     // Ambientna svetloba.
@@ -125,7 +128,8 @@ window.onload = function () {
         this.printPosition = function () {
             console.log(ladja.model.position.x.toFixed(3) + ", " +
                 ladja.model.position.y.toFixed(3) + ", " +
-                ladja.model.position.z.toFixed(3));
+                ladja.model.position.z.toFixed(3) + ", " +
+                ladja.model.rotation.y.toFixed(3));
         }
     };
 
@@ -152,18 +156,18 @@ window.onload = function () {
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
     function transformCamera() {
         if (cameraMode == 1) {
-            camera.position.x = ladja.model.position.x -30;
-            camera.position.y = ladja.model.position.y +40;
-            camera.position.z = ladja.model.position.z +30;
-            camera.lookAt(ladja.model.position);
+            camera.position.x = ladja.position.x -30;
+            camera.position.y = ladja.position.y +40;
+            camera.position.z = ladja.position.z +30;
+            camera.lookAt(ladja.position);
         } else if (cameraMode == 2) {
             var relativeCameraOffset = new THREE.Vector3(20, 7, 0);
-            var cameraOffset = relativeCameraOffset.applyMatrix4(ladja.model.matrixWorld);
+            var cameraOffset = relativeCameraOffset.applyMatrix4(ladja.matrixWorld);
 
             camera.position.x = cameraOffset.x;
             camera.position.y = cameraOffset.y;
             camera.position.z = cameraOffset.z;
-            camera.lookAt(ladja.model.position);
+            camera.lookAt(ladja.position);
         }
         skyBox.position.x = camera.position.x;
         skyBox.position.y = camera.position.y;
