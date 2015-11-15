@@ -73,7 +73,13 @@ Krogla.prototype.update = function () {
                 this.readyToDelete = true;
 
                 // odstej zivljenje, ce smo zadeli ladjo
-                console.log()
+                var hitObject = intersectList[0].object;
+                while (hitObject.parent) {
+                    if (hitObject.name.indexOf("ladja_") > -1) {
+                        hitObject.takeAHit();
+                    }
+                    hitObject = hitObject.parent;
+                }
             }
         }
     }

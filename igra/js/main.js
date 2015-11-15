@@ -164,7 +164,7 @@ window.onload = function () {
                 ladja.position.y.toFixed(3) + ", " +
                 ladja.position.z.toFixed(3) + ", " +
                 ladja.rotation.y.toFixed(3) + ", " +
-                ladja.krogleList.length
+                ladja.health
             );
         };
         this.enemyShoot = function () {

@@ -3,7 +3,7 @@ function Ladja() {
     THREE.Object3D.call(this);
 
     // Lastnosti
-    this.health = 5;
+    this.health = 3;
 
     this.collisionObjectList = [];
     this.krogleList = [];
@@ -30,6 +30,8 @@ function Ladja() {
     this.velRoll = 0.003;
     this.rollMax = 0.1;
 
+    this.velSink = 0.03;
+
     // Konstruktor
     this.name = "ladja_".concat(this.id.toString());
     this.rotation.order = 'YXZ';
@@ -40,6 +42,9 @@ Ladja.prototype = Object.create(THREE.Object3D.prototype);
 Ladja.prototype.constructor = Ladja;
 
 // Metode
+Ladja.prototype.takeAHit = function () {
+    this.health -= 1;
+};
 Ladja.prototype.shootForward = function () {
     var origin = this.position.clone();
     origin.y += 1;
@@ -55,7 +60,7 @@ Ladja.prototype.shootForward = function () {
 Ladja.prototype.shootLeft = function () {
     var origin = this.position.clone();
     origin.y += 1;
-    var directionFwd = new THREE.Vector3(-0.1, 0.02, 1);
+    var directionFwd = new THREE.Vector3(0, 0.02, 1);
     directionFwd.normalize();
     directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
@@ -67,7 +72,7 @@ Ladja.prototype.shootLeft = function () {
 Ladja.prototype.shootRight = function () {
     var origin = this.position.clone();
     origin.y += 1;
-    var directionFwd = new THREE.Vector3(-0.1, 0.02, -1);
+    var directionFwd = new THREE.Vector3(0, 0.02, -1);
     directionFwd.normalize();
     directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
@@ -181,6 +186,18 @@ Ladja.prototype.update = function () {
     // posodobi tabelo krogel (odstrani prvo, ce je potrebno)
     if (this.krogleList.length > 0 && this.krogleList[0].readyToDelete) {
         this.krogleList.shift();
+    }
+
+    // potopi se, ce je "health" prazen
+    if (this.health <= 0) {
+        this.movingFwd = false;
+        this.movingBack = false;
+        this.turningLeft = false;
+        this.turningRight = false;
+
+        if (this.position.y > -1.8) {
+            this.translateY(-this.velSink);
+        }
     }
 };
 
