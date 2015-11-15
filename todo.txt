@@ -7,7 +7,7 @@
 - nasprotniki logika (pot premikanja doloèimo mi)
   ko smo v bližni zaènejo streljat (na "vse" strani)
 - logika za streljanje (odštevanje življenj ipd.) + healthbar
-- model in logika pristanišèa pristanišèa
+- model in logika pristanišèa
 
 gameplay: 
 - igralec zaène nekje v morju z 0 cekini
