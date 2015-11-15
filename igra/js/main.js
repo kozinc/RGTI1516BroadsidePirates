@@ -16,6 +16,8 @@ var cameraMode;
 var ladja;
 var loader;
 
+var healthbar;
+
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
 window.addEventListener('keyup', handleKeyUp, false);
@@ -25,6 +27,7 @@ window.onload = function () {
     var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
     var keyboard = new KeyboardState();
     loader = new THREE.OBJMTLLoader();
+    healthbar = document.getElementById("Healthbar");
 
     // Ustvarimo kamero.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +197,7 @@ window.onload = function () {
         });
 
         transformCamera();
+        updateHUD();
 
         requestAnimationFrame(render);
         renderer.render(scene, camera);
@@ -218,7 +222,18 @@ window.onload = function () {
         skyBox.position.x = camera.position.x;
         skyBox.position.y = camera.position.y;
         skyBox.position.z = camera.position.z;
+    }
 
+    function updateHUD() {
+        if (healthbar.children.length < ladja.health) {
+            // povecaj health
+            var tmp = document.createElement("img");
+            tmp.setAttribute('src', 'textures/heart_small.png');
+            healthbar.appendChild(tmp);
+        } else if (healthbar.children.length > ladja.health) {
+            // zmanjsaj health
+            healthbar.removeChild(healthbar.children[0]);
+        }
     }
 };
 

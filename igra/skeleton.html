@@ -28,6 +28,22 @@
             margin: 0;
             overflow: hidden;
         }
+        #Healthbar {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+        }
+        #Coins {
+            position: absolute;
+            bottom: 0;
+            right: 10px;
+
+            color: white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            font-size: 2.2rem;
+            font-weight: bold;
+            font-family: Helvetica, Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -35,5 +51,12 @@
     <div id="Stats-output"></div>
     <!-- Div which will hold the Output. -->
     <div id="WebGL-output"></div>
+    <!-- HUD -->
+    <div id="Healthbar">
+    </div>
+    <div id="Coins">
+        <img src="textures/coin_small.png" alt="coin">
+        x <span id="collected">0</span>
+    </div>
 </body>
 </html>
