@@ -1,12 +1,13 @@
 1. Glavne stvari
 - streljanje
 - collision detection za kopno in nasprotnike
-
-----
-
-- nasprotniki logika (pot premikanja doloèimo mi)
-  ko smo v bližni zaènejo streljat (na "vse" strani)
 - logika za streljanje (odštevanje življenj ipd.) + healthbar
+-------------------------------------------------------------------------------------------------------
+- pobiranje cekinov
+- premikanje in streljanje nasprotnikov
+
+2. Dodatne
+- partikli med premikanje
 - model in logika pristanišèa
 
 gameplay: 
@@ -14,8 +15,3 @@ gameplay:
 - med igro zbira cekine (nakljuèno generirani po morju)
 - kadarkoli se lahko vrne v pristanišèe da shrani svoje cekine (prištejejo se k toèkam)
 - pristanešèe je (zaenkrat) samo eno, ob vsakem obisku, pa se na novo generirajo cekini in nasprotniki
-
-2. Dodatne
-- partikli med premikanje
-
-

@@ -14,7 +14,8 @@ var renderer;
 
 var cameraMode;
 var ladja;
-var loader;
+var objMtlLoader;
+var objLoader;
 
 var healthbar;
 
@@ -26,7 +27,8 @@ window.onload = function () {
     // Inicializacija
     var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
     var keyboard = new KeyboardState();
-    loader = new THREE.OBJMTLLoader();
+    objMtlLoader = new THREE.OBJMTLLoader();
+    objLoader = new THREE.OBJLoader();
     healthbar = document.getElementById("Healthbar");
 
     // Ustvarimo kamero.
@@ -50,14 +52,15 @@ window.onload = function () {
 
     // Dodamo osi
     ///////////////////////////////////////////////////////////////////////////////////////
-    /*var axes = new THREE.AxisHelper(10);
-    scene.add(axes);*/
+    var axes = new THREE.AxisHelper(10);
+    scene.add(axes);
 
-    // Dodamo ladjo igralca
+    // Dodamo ladje
     ///////////////////////////////////////////////////////////////////////////////////////
+    //ladja igralca
     ladja = new Ladja();
     scene.add(ladja);
-    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+    objMtlLoader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
         function (object) {
             object.scale.set(1.5, 1.5, 1.5);
             ladja.add(object);
@@ -70,7 +73,7 @@ window.onload = function () {
     nasprotniki[0].position.set(-55.553, 0.700, 31.663);
     nasprotniki[0].rotation.y = -0.662;
     scene.add(nasprotniki[0]);
-    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+    objMtlLoader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
         function (object) {
             object.scale.set(1.5, 1.5, 1.5);
             nasprotniki[0].add(object);
@@ -80,7 +83,7 @@ window.onload = function () {
     nasprotniki[1].position.set(-78.905, 0.700, -5.316);
     nasprotniki[1].rotation.y = 0.946;
     scene.add(nasprotniki[1]);
-    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+    objMtlLoader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
         function (object) {
             object.scale.set(1.5, 1.5, 1.5);
             nasprotniki[1].add(object);
@@ -92,12 +95,12 @@ window.onload = function () {
         ladja.addCollisionObject(tmp);
     });
 
-    // Dodamo morje in kopno
+    // Dodamo okolico (morje, kopno, ...)
     ///////////////////////////////////////////////////////////////////////////////////////
     var voda = new Water(scene, renderer, camera);
 
     // Dodamo kopno
-    loader.load("models/kopno.obj", "models/kopno.mtl",
+    objMtlLoader.load("models/kopno.obj", "models/kopno.mtl",
         function (object) {
             object.name = "kopno";
             scene.add(object);
@@ -108,6 +111,16 @@ window.onload = function () {
                 tmp.addCollisionObject(object);
             });
         });
+
+    // Svetilnik
+    objMtlLoader.load("models/lighthouse.obj", "models/lighthouse.mtl",
+        function (object) {
+            object.scale.set(1.5, 1.5, 1.5);
+            object.position.set(40, 1, 8);
+            object.rotation.y = -1;
+            scene.add(object);
+        }
+    );
 
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
