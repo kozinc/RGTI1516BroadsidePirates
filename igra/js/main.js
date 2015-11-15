@@ -19,6 +19,8 @@ var objLoader;
 
 var healthbar;
 
+var mapCamera, mapWidth = 320, mapHeight = 240; // w/h should match div dimensions
+
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
 window.addEventListener('keyup', handleKeyUp, false);
@@ -196,10 +198,19 @@ window.onload = function () {
     gui.add(guiControls, 'printData');
     gui.add(guiControls, 'enemyShoot');
 
+    // Mini-map zemljevid
+    ///////////////////////////////////////////////////////////////////////////////////////
+    
+    mapCamera = new THREE.PerspectiveCamera(45, mapWidth / mapHeight, 0.1, 1000);    
+    scene.add(mapCamera);
+    renderer.autoClear = false;
+
     // Renderiranje.
     ///////////////////////////////////////////////////////////////////////////////////////
     render();
     function render() {
+        renderer.clear();
+        renderer.setViewport( 0, 0, window.innerWidth, window.innerHeight );
         stats.update(); // Posodobi FPS-je.
         keyboard.update(); // Posodobi stanje tipkovnice.
         voda.update(); // Posodobi vodo.
@@ -214,6 +225,12 @@ window.onload = function () {
 
         requestAnimationFrame(render);
         renderer.render(scene, camera);
+
+        //Minimap render
+        renderer.setViewport( 10, window.innerHeight - mapHeight - 10, mapWidth, mapHeight );
+        renderer.render( scene, mapCamera );
+
+
     }
 
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
@@ -232,6 +249,11 @@ window.onload = function () {
             camera.position.z = cameraOffset.z;
             camera.lookAt(ladja.position);
         }
+        mapCamera.position.x = ladja.position.x +30;
+        mapCamera.position.y = ladja.position.y +60;
+        mapCamera.position.z = ladja.position.z ;
+        mapCamera.lookAt(ladja.position);
+
         skyBox.position.x = camera.position.x;
         skyBox.position.y = camera.position.y;
         skyBox.position.z = camera.position.z;
