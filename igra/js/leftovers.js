@@ -68,3 +68,11 @@ debug.geometry.vertices[1] = direction;
 debug.geometry.verticesNeedUpdate = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////
+/*this.children.forEach(function (tmp1) {
+ tmp1.children.forEach(function (tmp2) {
+ tmp2.castShadow = true;
+ tmp2.receiveShadow = true;
+ })
+ });*/
+
+///////////////////////////////////////////////////////////////////////////////////////

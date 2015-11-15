@@ -3,6 +3,8 @@ function Ladja() {
     THREE.Object3D.call(this);
 
     // Lastnosti
+    this.health = 5;
+
     this.collisionObjectList = [];
     this.krogleList = [];
 
@@ -32,12 +34,6 @@ function Ladja() {
     this.name = "ladja_".concat(this.id.toString());
     this.rotation.order = 'YXZ';
     this.translateY(0.7);
-    /*this.children.forEach(function (tmp1) {
-        tmp1.children.forEach(function (tmp2) {
-            tmp2.castShadow = true;
-            tmp2.receiveShadow = true;
-        })
-    });*/
 }
 // Dedovanje (nastavi metode in konstruktor)
 Ladja.prototype = Object.create(THREE.Object3D.prototype);
@@ -195,8 +191,8 @@ Ladja.prototype.checkCollisions = function () {
     var directionBack = new THREE.Vector3(1,0,0);
     directionBack.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
-    var rayFwd = new THREE.Raycaster(origin, directionFwd, 0, 1.8);
-    var rayBack = new THREE.Raycaster(origin, directionBack, 0, 1.8);
+    var rayFwd = new THREE.Raycaster(origin, directionFwd, 0, 2.5);
+    var rayBack = new THREE.Raycaster(origin, directionBack, 0, 5);
 
     var intersectListFwd = rayFwd.intersectObjects(this.collisionObjectList, true);
     var intersectListBack = rayBack.intersectObjects(this.collisionObjectList, true);

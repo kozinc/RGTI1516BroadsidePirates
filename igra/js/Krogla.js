@@ -36,34 +36,46 @@ Krogla.prototype.constructor = Krogla;
 
 // Metode
 Krogla.prototype.update = function () {
-    // posodobi lokacijo
-    this.translateX(this.direction.x * this.velFwd);
-    this.translateY(this.direction.y * this.velFwd - this.velDown);
-    this.translateZ(this.direction.z * this.velFwd);
+    if (!this.readyToDelete) {
+        // posodobi lokacijo
+        this.translateX(this.direction.x * this.velFwd);
+        this.translateY(this.direction.y * this.velFwd - this.velDown);
+        this.translateZ(this.direction.z * this.velFwd);
 
-    // posodobi hitrosti
-    this.velFwd -= this.accFwd;
-    this.velDown += this.accDown;
+        // posodobi hitrosti
+        this.velFwd -= this.accFwd;
+        this.velDown += this.accDown;
 
-    // odstrani geometrijo
-    if (this.timeout < 0 && this.parent) {
-        this.remove(this.explosion);
-        this.parent.remove(this);
-        this.readyToDelete = true;
-    }
+        // preveri ce pade v vodo in odstrani
+        if (this.position.y < -this.radius) {
+            this.remove(this.explosion);
+            this.parent.remove(this);
+            this.readyToDelete = true;
+        }
 
-    // preveri ce pride do kolizije
-    var intersectList = this.checkCollisions();
-    if (intersectList.length > 0) {
-        this.velFwd = 0;
-        this.accFwd = 0;
-        this.velDown = 0;
-        this.accDown = 0;
+        // preveri ce pride do kolizije in odstrani
+        var intersectList = this.checkCollisions();
+        if (intersectList.length > 0) {
+            this.velFwd = 0;
+            this.accFwd = 0;
+            this.velDown = 0;
+            this.accDown = 0;
 
-        // prikazi eksplozijo
-        this.material.visible = false;
-        this.explosion.visible = true;
-        this.timeout -= 1;
+            // prikazi eksplozijo
+            this.material.visible = false;
+            this.explosion.visible = true;
+            this.timeout -= 1;
+
+            // odstrani geometrijo
+            if (this.timeout < 0) {
+                this.remove(this.explosion);
+                this.parent.remove(this);
+                this.readyToDelete = true;
+
+                // odstej zivljenje, ce smo zadeli ladjo
+                console.log()
+            }
+        }
     }
 };
 Krogla.prototype.checkCollisions = function () {

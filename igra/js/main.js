@@ -159,11 +159,13 @@ window.onload = function () {
             }
         };
         // zapisi lokacijo ladje.
-        this.printPosition = function () {
+        this.printData = function () {
             console.log(ladja.position.x.toFixed(3) + ", " +
                 ladja.position.y.toFixed(3) + ", " +
                 ladja.position.z.toFixed(3) + ", " +
-                ladja.rotation.y.toFixed(3));
+                ladja.rotation.y.toFixed(3) + ", " +
+                ladja.krogleList.length
+            );
         };
         this.enemyShoot = function () {
             nasprotniki.forEach(function (tmp) {
@@ -175,7 +177,7 @@ window.onload = function () {
 
     var gui = new dat.GUI();
     gui.add(guiControls, 'zamenjajKamero');
-    gui.add(guiControls, 'printPosition');
+    gui.add(guiControls, 'printData');
     gui.add(guiControls, 'enemyShoot');
 
     // Renderiranje.
