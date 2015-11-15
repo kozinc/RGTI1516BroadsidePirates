@@ -1,3 +1,6 @@
+
+var spriteMap = THREE.ImageUtils.loadTexture("textures/boom2.png");
+
 function Krogla(parentCollisionList, power, origin, direction) {
     // Dedovanje (klici konstruktor razreda Mesh)
     this.radius = 0.6;
@@ -20,8 +23,7 @@ function Krogla(parentCollisionList, power, origin, direction) {
     this.position.set(origin.x, origin.y, origin.z);
 
     // Sprite, ki se doda na sceno ob morebitnem trku
-    var spriteMap = THREE.ImageUtils.loadTexture("textures/boom2.png");
-    var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap, color: 0xffffff});
+    var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap});
     this.explosion = new THREE.Sprite(spriteMaterial);
     this.explosion.scale.set(10, 10, 10);
     this.explosion.visible = false;
@@ -45,6 +47,7 @@ Krogla.prototype.update = function () {
 
     // odstrani geometrijo
     if (this.timeout < 0 && this.parent) {
+        this.remove(this.explosion);
         this.parent.remove(this);
         this.readyToDelete = true;
     }

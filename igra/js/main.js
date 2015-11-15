@@ -34,7 +34,6 @@ window.onload = function () {
     // Ustvarimo 3D sceno, katera "drzi" vse objekte, osvetljevanje in kamere.
     ///////////////////////////////////////////////////////////////////////////////////////
     scene = new THREE.Scene();
-    console.log(scene.parent);
 
     // Ustvarimo "render", ki skrbi za izris objektov za doloceno pozicijo/kot kamere.
     ///////////////////////////////////////////////////////////////////////////////////////
