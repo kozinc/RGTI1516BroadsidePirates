@@ -51,7 +51,7 @@ Ladja.prototype.shootForward = function () {
     directionFwd.normalize();
     directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
-    var tmpKrogla = new Krogla(0.8, origin, directionFwd);
+    var tmpKrogla = new Krogla(this.collisionObjectList, 0.8, origin, directionFwd);
 
     this.parent.add(tmpKrogla);
     this.krogleList.push(tmpKrogla);
@@ -146,8 +146,8 @@ Ladja.prototype.update = function () {
     this.translateX(-this.vel);
     this.rotation.y += this.velTurn;
 
+    // ce pride do kolizije, potem iznici premik in rotacijo
     if (this.checkCollisions()) {
-        // ce pride do kolizije, potem iznici premik in rotacijo
         this.translateX(this.vel);
         this.rotation.y -= this.velTurn;
         this.vel = 0.0;

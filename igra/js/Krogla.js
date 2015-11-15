@@ -1,4 +1,4 @@
-function Krogla(power, origin, direction) {
+function Krogla(parentCollisionList, power, origin, direction) {
     // Dedovanje (klici konstruktor razreda Mesh)
     this.radius = 0.5;
     var sphereGeometry = new THREE.SphereGeometry(this.radius, 10, 10);
@@ -6,15 +6,14 @@ function Krogla(power, origin, direction) {
     THREE.Mesh.call(this, sphereGeometry, sphereMaterial);
 
     // Lastnosti
-    this.origin = origin;
+    this.collisionObjectList = parentCollisionList;
     this.direction = direction;
+    this.readyToDelete = false;
 
     this.velFwd = power;
     this.accFwd = 0.005; // ustavljanje krogle
     this.velDown = 0;
     this.accDown = 0.002; // padanje krogle
-
-    this.readyToDelete = false;
 
     // Konstruktor
     this.name = "krogla_".concat(this.id.toString());
@@ -40,4 +39,19 @@ Krogla.prototype.update = function () {
         this.parent.remove(this);
         this.readyToDelete = true;
     }
+
+    // preveri ce pride do kolizije
+    if (this.checkCollisions()) {
+        this.velFwd = 0;
+        this.accFwd = 0;
+    }
+};
+Krogla.prototype.checkCollisions = function () {
+    var origin = this.position.clone();
+    var direction = this.direction.clone();
+    direction.setY(0);
+
+    var ray = new THREE.Raycaster(origin, direction, 0, 1);
+    var intersectList = ray.intersectObjects(this.collisionObjectList, true);
+    return (intersectList.length > 0);
 };
