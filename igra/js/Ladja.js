@@ -47,11 +47,11 @@ Ladja.prototype.constructor = Ladja;
 Ladja.prototype.shootForward = function () {
     var origin = this.position.clone();
     origin.y += 1;
-    var directionFwd = new THREE.Vector3(-1,0.15,0);
+    var directionFwd = new THREE.Vector3(-1,0.05,0);
     directionFwd.normalize();
     directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 
-    var tmpKrogla = new Krogla(this.collisionObjectList, 0.8, origin, directionFwd);
+    var tmpKrogla = new Krogla(this.collisionObjectList, 0.6, origin, directionFwd);
 
     this.parent.add(tmpKrogla);
     this.krogleList.push(tmpKrogla);

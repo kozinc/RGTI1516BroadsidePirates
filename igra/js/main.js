@@ -51,7 +51,7 @@ window.onload = function () {
     /*var axes = new THREE.AxisHelper(10);
     scene.add(axes);*/
 
-    // Dodamo model ladje
+    // Dodamo ladjo igralca
     ///////////////////////////////////////////////////////////////////////////////////////
     ladja = new Ladja();
     scene.add(ladja);
@@ -59,6 +59,33 @@ window.onload = function () {
         function (object) {
             ladja.add(object);
         });
+
+    // Dodamo nasprotnike
+    var nasprotniki = [];
+
+    nasprotniki.push(new Ladja());
+    nasprotniki[0].position.set(-55.553, 0.700, 31.663);
+    nasprotniki[0].rotation.y = -0.662;
+    scene.add(nasprotniki[0]);
+    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+        function (object) {
+            nasprotniki[0].add(object);
+        });
+
+    nasprotniki.push(new Ladja());
+    nasprotniki[1].position.set(-78.905, 0.700, -5.316);
+    nasprotniki[1].rotation.y = 0.946;
+    scene.add(nasprotniki[1]);
+    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+        function (object) {
+            nasprotniki[1].add(object);
+        });
+
+    // collision: nasprotniki - igralec
+    nasprotniki.forEach(function (tmp) {
+        tmp.addCollisionObject(ladja);
+        ladja.addCollisionObject(tmp);
+    });
 
     // Dodamo morje in kopno
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +96,12 @@ window.onload = function () {
         function (object) {
             object.name = "kopno";
             scene.add(object);
+
+            // collision: ladje - kopno
             ladja.addCollisionObject(object);
+            nasprotniki.forEach(function (tmp) {
+                tmp.addCollisionObject(object);
+            });
         });
 
     // Ambientna svetloba.
@@ -126,16 +158,22 @@ window.onload = function () {
         };
         // zapisi lokacijo ladje.
         this.printPosition = function () {
-            console.log(ladja.model.position.x.toFixed(3) + ", " +
-                ladja.model.position.y.toFixed(3) + ", " +
-                ladja.model.position.z.toFixed(3) + ", " +
-                ladja.model.rotation.y.toFixed(3));
-        }
+            console.log(ladja.position.x.toFixed(3) + ", " +
+                ladja.position.y.toFixed(3) + ", " +
+                ladja.position.z.toFixed(3) + ", " +
+                ladja.rotation.y.toFixed(3));
+        };
+        this.enemyShoot = function () {
+            nasprotniki.forEach(function (tmp) {
+                tmp.shootForward();
+            });
+        };
     };
 
     var gui = new dat.GUI();
     gui.add(guiControls, 'zamenjajKamero');
     gui.add(guiControls, 'printPosition');
+    gui.add(guiControls, 'enemyShoot');
 
     // Renderiranje.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -146,6 +184,9 @@ window.onload = function () {
         voda.update(); // Posodobi vodo.
 
         ladja.update(); // Posodobi ladjo in njene krogle
+        nasprotniki.forEach(function (tmp) {
+            tmp.update();
+        });
 
         transformCamera();
 

@@ -1,10 +1,13 @@
 1. Glavne stvari
 - streljanje
-- nasprotniki (pot premikanja doloèimo mi)
+- collision detection za kopno in nasprotnike
+
+----
+
+- nasprotniki logika (pot premikanja doloèimo mi)
   ko smo v bližni zaènejo streljat (na "vse" strani)
 - logika za streljanje (odštevanje življenj ipd.) + healthbar
-- model kopnega in "morja" + pristanišèa
-- collision detection za kopno in nasprotnike
+- model in logika pristanišèa pristanišèa
 
 gameplay: 
 - igralec zaène nekje v morju z 0 cekini
