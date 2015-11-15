@@ -32,12 +32,12 @@ function Ladja() {
     this.name = "ladja_".concat(this.id.toString());
     this.rotation.order = 'YXZ';
     this.translateY(0.7);
-    this.children.forEach(function (tmp1) {
+    /*this.children.forEach(function (tmp1) {
         tmp1.children.forEach(function (tmp2) {
             tmp2.castShadow = true;
             tmp2.receiveShadow = true;
         })
-    });
+    });*/
 }
 // Dedovanje (nastavi metode in konstruktor)
 Ladja.prototype = Object.create(THREE.Object3D.prototype);
@@ -47,7 +47,31 @@ Ladja.prototype.constructor = Ladja;
 Ladja.prototype.shootForward = function () {
     var origin = this.position.clone();
     origin.y += 1;
-    var directionFwd = new THREE.Vector3(-1,0.05,0);
+    var directionFwd = new THREE.Vector3(-1, 0.05, 0);
+    directionFwd.normalize();
+    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
+
+    var tmpKrogla = new Krogla(this.collisionObjectList, 0.6, origin, directionFwd);
+
+    this.parent.add(tmpKrogla);
+    this.krogleList.push(tmpKrogla);
+};
+Ladja.prototype.shootLeft = function () {
+    var origin = this.position.clone();
+    origin.y += 1;
+    var directionFwd = new THREE.Vector3(-0.1, 0.02, 1);
+    directionFwd.normalize();
+    directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
+
+    var tmpKrogla = new Krogla(this.collisionObjectList, 0.6, origin, directionFwd);
+
+    this.parent.add(tmpKrogla);
+    this.krogleList.push(tmpKrogla);
+};
+Ladja.prototype.shootRight = function () {
+    var origin = this.position.clone();
+    origin.y += 1;
+    var directionFwd = new THREE.Vector3(-0.1, 0.02, -1);
     directionFwd.normalize();
     directionFwd.applyAxisAngle(new THREE.Vector3(0,1,0), this.rotation.y);
 

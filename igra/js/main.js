@@ -57,6 +57,7 @@ window.onload = function () {
     scene.add(ladja);
     loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
         function (object) {
+            object.scale.set(1.5, 1.5, 1.5);
             ladja.add(object);
         });
 
@@ -69,6 +70,7 @@ window.onload = function () {
     scene.add(nasprotniki[0]);
     loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
         function (object) {
+            object.scale.set(1.5, 1.5, 1.5);
             nasprotniki[0].add(object);
         });
 
@@ -78,6 +80,7 @@ window.onload = function () {
     scene.add(nasprotniki[1]);
     loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
         function (object) {
+            object.scale.set(1.5, 1.5, 1.5);
             nasprotniki[1].add(object);
         });
 
@@ -107,13 +110,13 @@ window.onload = function () {
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
     // add subtle ambient lighting
-    var ambientLight = new THREE.AmbientLight(0x2B2B2B);
+    var ambientLight = new THREE.AmbientLight(0x2E2E2E);
     scene.add(ambientLight);
 
     // Vir svetlobe.
     ///////////////////////////////////////////////////////////////////////////////////////
 
-    var directionalLight = new THREE.DirectionalLight(0xffecb3, 0.8);
+    var directionalLight = new THREE.DirectionalLight(0xffecb3, 0.9);
     directionalLight.position.set(600, 500, -600);
     scene.add(directionalLight);
 
@@ -165,7 +168,8 @@ window.onload = function () {
         };
         this.enemyShoot = function () {
             nasprotniki.forEach(function (tmp) {
-                tmp.shootForward();
+                tmp.shootLeft();
+                tmp.shootRight();
             });
         };
     };
@@ -198,11 +202,11 @@ window.onload = function () {
     function transformCamera() {
         if (cameraMode == 1) {
             camera.position.x = ladja.position.x -30;
-            camera.position.y = ladja.position.y +40;
+            camera.position.y = ladja.position.y +50;
             camera.position.z = ladja.position.z +30;
             camera.lookAt(ladja.position);
         } else if (cameraMode == 2) {
-            var relativeCameraOffset = new THREE.Vector3(20, 7, 0);
+            var relativeCameraOffset = new THREE.Vector3(30, 7, 0);
             var cameraOffset = relativeCameraOffset.applyMatrix4(ladja.matrixWorld);
 
             camera.position.x = cameraOffset.x;
@@ -239,7 +243,8 @@ function onResize() {
 function handleKeyDown(event) {
     switch (event.keyCode) {
         case 32: // SPACE
-            ladja.shootForward();
+            ladja.shootLeft();
+            ladja.shootRight();
             break;
         case 37: // left arrow
             ladja.turnLeftStart();

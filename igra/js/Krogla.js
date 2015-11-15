@@ -1,8 +1,8 @@
 function Krogla(parentCollisionList, power, origin, direction) {
     // Dedovanje (klici konstruktor razreda Mesh)
-    this.radius = 0.5;
+    this.radius = 0.8;
     var sphereGeometry = new THREE.SphereGeometry(this.radius, 10, 10);
-    var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x000000});
+    var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x2E2E2E});
     THREE.Mesh.call(this, sphereGeometry, sphereMaterial);
 
     // Lastnosti
