@@ -243,7 +243,7 @@ window.onload = function () {
 
         //Minimap render
         renderer.setViewport( 10, window.innerHeight - mapHeight - 10, mapWidth, mapHeight );
-        //renderer.render( scene, mapCamera );
+        renderer.render( scene, mapCamera );
     }
 
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
