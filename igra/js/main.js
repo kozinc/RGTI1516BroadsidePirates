@@ -15,9 +15,9 @@ var renderer;
 var cameraMode;
 var ladja;
 var objMtlLoader;
-var objLoader;
 
-var healthbar;
+var healthbarDOM;
+var coinsDOM;
 
 var mapCamera, mapWidth = 320, mapHeight = 240; // w/h should match div dimensions
 
@@ -30,8 +30,8 @@ window.onload = function () {
     var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
     var keyboard = new KeyboardState();
     objMtlLoader = new THREE.OBJMTLLoader();
-    objLoader = new THREE.OBJLoader();
-    healthbar = document.getElementById("Healthbar");
+    healthbarDOM = document.getElementById("Healthbar");
+    coinsDOM = document.getElementById("CollectedCoins");
 
     // Ustvarimo kamero.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -54,8 +54,8 @@ window.onload = function () {
 
     // Dodamo osi
     ///////////////////////////////////////////////////////////////////////////////////////
-    var axes = new THREE.AxisHelper(10);
-    scene.add(axes);
+    /*var axes = new THREE.AxisHelper(10);
+    scene.add(axes);*/
 
     // Dodamo ladje
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +124,15 @@ window.onload = function () {
         }
     );
 
+    // Dodamo cekine
+    ///////////////////////////////////////////////////////////////////////////////////////
+    var cekini = [];
+
+    for (var i = 0; i < 50; i++) {
+        cekini.push(new Coin(ladja));
+        scene.add(cekini[i]);
+    }
+
     // Ambientna svetloba.
     ///////////////////////////////////////////////////////////////////////////////////////
     // add subtle ambient lighting
@@ -133,11 +142,13 @@ window.onload = function () {
     // Vir svetlobe.
     ///////////////////////////////////////////////////////////////////////////////////////
 
-    var directionalLight = new THREE.DirectionalLight(0xffecb3, 0.9);
-    directionalLight.position.set(600, 500, -600);
-    scene.add(directionalLight);
+    var directionalLight1 = new THREE.DirectionalLight(0xffecb3, 0.9);
+    directionalLight1.position.set(600, 500, -600);
+    scene.add(directionalLight1);
 
-    // dodan tudi skupaj z ladjico, morda bi bilo bolje luc prestaviti sem.
+    var directionalLight2 = new THREE.DirectionalLight(0xffe699, 0.5);
+    directionalLight2.position.set(-600, 500, 600);
+    scene.add(directionalLight2);
 
     // Skybox
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -164,6 +175,13 @@ window.onload = function () {
 
     var skyBox = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), aSkyBoxMaterial);
     scene.add(skyBox);
+
+    // Mini-map zemljevid
+    ///////////////////////////////////////////////////////////////////////////////////////
+    var d = 2;
+    mapCamera = new THREE.OrthographicCamera(mapWidth / - d, mapWidth / d, mapHeight / d, mapHeight / - d, 1, 500);
+
+    renderer.autoClear = false;
 
     // GUI kontrole.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -198,14 +216,6 @@ window.onload = function () {
     gui.add(guiControls, 'printData');
     gui.add(guiControls, 'enemyShoot');
 
-    // Mini-map zemljevid
-    ///////////////////////////////////////////////////////////////////////////////////////
-    var d = 2;
-    mapCamera = new THREE.OrthographicCamera(mapWidth / - d, mapWidth / d, mapHeight / d, mapHeight / - d, 1, 500);
-
-    scene.add(mapCamera);
-    renderer.autoClear = false;
-
     // Renderiranje.
     ///////////////////////////////////////////////////////////////////////////////////////
     render();
@@ -221,6 +231,10 @@ window.onload = function () {
             tmp.update();
         });
 
+        cekini.forEach(function (tmp) { // Posodobi cekine
+            tmp.update();
+        });
+
         transformCamera();
         updateHUD();
 
@@ -229,16 +243,14 @@ window.onload = function () {
 
         //Minimap render
         renderer.setViewport( 10, window.innerHeight - mapHeight - 10, mapWidth, mapHeight );
-        renderer.render( scene, mapCamera );
-
-
+        //renderer.render( scene, mapCamera );
     }
 
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
     function transformCamera() {
         if (cameraMode == 1) {
             camera.position.x = ladja.position.x -30;
-            camera.position.y = ladja.position.y +50;
+            camera.position.y = ladja.position.y +80;
             camera.position.z = ladja.position.z +30;
             camera.lookAt(ladja.position);
         } else if (cameraMode == 2) {
@@ -261,15 +273,16 @@ window.onload = function () {
     }
 
     function updateHUD() {
-        if (healthbar.children.length < ladja.health) {
+        if (healthbarDOM.children.length < ladja.health) {
             // povecaj health
             var tmp = document.createElement("img");
             tmp.setAttribute('src', 'textures/heart_small.png');
-            healthbar.appendChild(tmp);
-        } else if (healthbar.children.length > ladja.health) {
+            healthbarDOM.appendChild(tmp);
+        } else if (healthbarDOM.children.length > ladja.health) {
             // zmanjsaj health
-            healthbar.removeChild(healthbar.children[0]);
+            healthbarDOM.removeChild(healthbarDOM.children[0]);
         }
+        coinsDOM.textContent = collectedCoins.toString();
     }
 };
 
