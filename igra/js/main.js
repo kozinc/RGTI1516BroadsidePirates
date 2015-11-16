@@ -200,8 +200,9 @@ window.onload = function () {
 
     // Mini-map zemljevid
     ///////////////////////////////////////////////////////////////////////////////////////
-    
-    mapCamera = new THREE.PerspectiveCamera(45, mapWidth / mapHeight, 0.1, 1000);    
+    var d = 2;
+    mapCamera = new THREE.OrthographicCamera(mapWidth / - d, mapWidth / d, mapHeight / d, mapHeight / - d, 1, 500);
+
     scene.add(mapCamera);
     renderer.autoClear = false;
 
@@ -249,9 +250,9 @@ window.onload = function () {
             camera.position.z = cameraOffset.z;
             camera.lookAt(ladja.position);
         }
-        mapCamera.position.x = ladja.position.x +30;
+        mapCamera.position.x = ladja.position.x;
         mapCamera.position.y = ladja.position.y +60;
-        mapCamera.position.z = ladja.position.z ;
+        mapCamera.position.z = ladja.position.z;
         mapCamera.lookAt(ladja.position);
 
         skyBox.position.x = camera.position.x;
