@@ -1,10 +1,4 @@
 function Water(scene, ms_Renderer, ms_Camera) {
-    // Lastnosti
-    this.ms_Renderer = ms_Renderer;
-    this.ms_Camera = ms_Camera;
-    this.ms_Scene = scene;
-    this.ms_Water = null;
-
     // Load textures        
     var waterNormals = new THREE.ImageUtils.loadTexture('textures/waternormals.jpg');
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping; 
@@ -34,5 +28,4 @@ function Water(scene, ms_Renderer, ms_Camera) {
 Water.prototype.update = function () {
     this.ms_Water.material.uniforms.time.value += 1.0 / 60.0;
     this.ms_Water.render();
-    this.ms_Renderer.render(this.ms_Scene, this.ms_Camera);
 };

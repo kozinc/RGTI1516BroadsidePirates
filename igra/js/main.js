@@ -8,7 +8,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 
 // globalne spremenljivke
-var camera;
+var camera1;
+var camera2;
+var cameraMap;
+var cameraWater;
+
 var scene;
 var renderer;
 
@@ -18,8 +22,6 @@ var objMtlLoader;
 
 var healthbarDOM;
 var coinsDOM;
-
-var mapCamera, mapWidth = 320, mapHeight = 240; // w/h should match div dimensions
 
 window.addEventListener('resize', onResize, false); // Ko spremenimo velikost brskalnika, poklicemo onResize.
 window.addEventListener('keydown', handleKeyDown, false);
@@ -33,14 +35,19 @@ window.onload = function () {
     healthbarDOM = document.getElementById("Healthbar");
     coinsDOM = document.getElementById("CollectedCoins");
 
-    // Ustvarimo kamero.
-    ///////////////////////////////////////////////////////////////////////////////////////
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    cameraMode = 2;
-
     // Ustvarimo 3D sceno, katera "drzi" vse objekte, osvetljevanje in kamere.
     ///////////////////////////////////////////////////////////////////////////////////////
     scene = new THREE.Scene();
+
+    // Ustvarimo kamero.
+    ///////////////////////////////////////////////////////////////////////////////////////
+    camera1 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera2 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    cameraMode = 2;
+
+    //cameraMap = new THREE.OrthographicCamera(mapWidth / - d, mapWidth / d, mapHeight / d, mapHeight / - d, 1, 500);
+    cameraMap = new THREE.OrthographicCamera(-100, 100, 100, -100, 1, 500);
+    cameraWater = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     // Ustvarimo "render", ki skrbi za izris objektov za doloceno pozicijo/kot kamere.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +58,7 @@ window.onload = function () {
     // vir svetlobe povzroca sence!
     renderer.shadowMapEnabled = true;
     document.getElementById("WebGL-output").appendChild(renderer.domElement);
+    renderer.autoClear = false;
 
     // Dodamo osi
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +107,7 @@ window.onload = function () {
 
     // Dodamo okolico (morje, kopno, ...)
     ///////////////////////////////////////////////////////////////////////////////////////
-    var voda = new Water(scene, renderer, camera);
+    var voda = new Water(scene, renderer, cameraWater);
 
     // Dodamo kopno
     objMtlLoader.load("models/kopno.obj", "models/kopno.mtl",
@@ -176,13 +184,6 @@ window.onload = function () {
     var skyBox = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), aSkyBoxMaterial);
     scene.add(skyBox);
 
-    // Mini-map zemljevid
-    ///////////////////////////////////////////////////////////////////////////////////////
-    var d = 2;
-    mapCamera = new THREE.OrthographicCamera(mapWidth / - d, mapWidth / d, mapHeight / d, mapHeight / - d, 1, 500);
-
-    renderer.autoClear = false;
-
     // GUI kontrole.
     ///////////////////////////////////////////////////////////////////////////////////////
     var guiControls = new function () {
@@ -213,8 +214,8 @@ window.onload = function () {
 
     var gui = new dat.GUI();
     gui.add(guiControls, 'zamenjajKamero');
-    gui.add(guiControls, 'printData');
     gui.add(guiControls, 'enemyShoot');
+    gui.add(guiControls, 'printData');
 
     // Renderiranje.
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -239,37 +240,47 @@ window.onload = function () {
         updateHUD();
 
         requestAnimationFrame(render);
-        renderer.render(scene, camera);
-
-        //Minimap render
-        renderer.setViewport( 10, window.innerHeight - mapHeight - 10, mapWidth, mapHeight );
-        renderer.render( scene, mapCamera );
+        if (cameraMode == 1) {
+            renderer.render(scene, camera1);
+        } else {
+            renderer.render(scene, camera2);
+            //Minimap render
+            var k = 0.3;
+            renderer.setViewport(
+                0, window.innerHeight - window.innerHeight*k,
+                window.innerHeight*k, window.innerHeight*k);
+            renderer.render( scene, cameraMap );
+        }
     }
 
     // Dolocanje lokacije kamere, glede na izbrani nacin prikaza.
     function transformCamera() {
-        if (cameraMode == 1) {
-            camera.position.x = ladja.position.x -30;
-            camera.position.y = ladja.position.y +80;
-            camera.position.z = ladja.position.z +30;
-            camera.lookAt(ladja.position);
-        } else if (cameraMode == 2) {
-            var relativeCameraOffset = new THREE.Vector3(30, 7, 0);
-            var cameraOffset = relativeCameraOffset.applyMatrix4(ladja.matrixWorld);
+        camera1.position.x = ladja.position.x - 30;
+        camera1.position.y = ladja.position.y + 80;
+        camera1.position.z = ladja.position.z + 30;
+        camera1.lookAt(ladja.position);
 
-            camera.position.x = cameraOffset.x;
-            camera.position.y = cameraOffset.y;
-            camera.position.z = cameraOffset.z;
-            camera.lookAt(ladja.position);
-        }
-        mapCamera.position.x = ladja.position.x;
-        mapCamera.position.y = ladja.position.y +60;
-        mapCamera.position.z = ladja.position.z;
-        mapCamera.lookAt(ladja.position);
+        var relativeCameraOffset = new THREE.Vector3(30, 7, 0);
+        var cameraOffset = relativeCameraOffset.applyMatrix4(ladja.matrixWorld);
 
-        skyBox.position.x = camera.position.x;
-        skyBox.position.y = camera.position.y;
-        skyBox.position.z = camera.position.z;
+        camera2.position.x = cameraOffset.x;
+        camera2.position.y = cameraOffset.y;
+        camera2.position.z = cameraOffset.z;
+        camera2.lookAt(ladja.position);
+
+        cameraMap.position.x = ladja.position.x;
+        cameraMap.position.y = ladja.position.y + 60;
+        cameraMap.position.z = ladja.position.z;
+        cameraMap.lookAt(ladja.position);
+
+        cameraWater.position.x = ladja.position.x + 30;
+        cameraWater.position.y = ladja.position.y + 50;
+        cameraWater.position.z = ladja.position.z + 30;
+        cameraWater.lookAt(ladja.position);
+
+        skyBox.position.x = ladja.position.x;
+        skyBox.position.y = ladja.position.y;
+        skyBox.position.z = ladja.position.z;
     }
 
     function updateHUD() {
@@ -299,8 +310,12 @@ function initStats() {
 
 // Ko spremenimo velikost brskalnika.
 function onResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    camera1.aspect = window.innerWidth / window.innerHeight;
+    camera1.updateProjectionMatrix();
+
+    camera2.aspect = window.innerWidth / window.innerHeight;
+    camera2.updateProjectionMatrix();
+
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
@@ -322,6 +337,13 @@ function handleKeyDown(event) {
             break;
         case 40: // down arrow
             ladja.moveBackStart();
+            break;
+        case 67: // crka C
+            if (cameraMode == 1) {
+                cameraMode = 2;
+            } else {
+                cameraMode = 1;
+            }
             break;
     }
 }
