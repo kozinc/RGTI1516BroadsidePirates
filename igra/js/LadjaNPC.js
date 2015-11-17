@@ -35,7 +35,7 @@ function LadjaNPC(pointsToVisit, player) {
 
     var self = this;
     var loader = new THREE.OBJMTLLoader();
-    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+    loader.load("models/ladja_sovrag.obj", "models/ladja_sovrag.mtl",
         function (object) {
             object.scale.set(1.5, 1.5, 1.5);
             self.add(object);
