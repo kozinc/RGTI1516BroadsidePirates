@@ -84,15 +84,14 @@ LadjaNPC.prototype.update = function () {
     // posodobi lego ladje
     this.position.x += this.direction.x * this.vel;
     this.position.z += this.direction.z * this.vel;
+
     // nastavi rotacijo ladje
-    // TODO: popravi
-    var directionFwd = new THREE.Vector3(-1, 0, 0);
-    this.rotation.y = this.direction.angleTo(directionFwd);
+    var dx = this.position.x - this.pointsToVisit[0].x;
+    var dz = this.position.z - this.pointsToVisit[0].z;
 
-    var dx = Math.abs(this.position.x - this.pointsToVisit[0].x);
-    var dz = Math.abs(this.position.z - this.pointsToVisit[0].z);
+    this.rotation.y = Math.atan2(dx, dz) - Math.PI / 2;
 
-    if (dx < this.eps && dz < this.eps) {
+    if (Math.abs(dx) < this.eps && Math.abs(dz) < this.eps) {
         this.direction = (new THREE.Vector3(0, 0, 0))
             .subVectors(this.pointsToVisit[1], this.pointsToVisit[0]).normalize();
         var firstPoint = this.pointsToVisit.shift();

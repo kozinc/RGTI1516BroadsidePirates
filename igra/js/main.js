@@ -80,14 +80,6 @@ window.onload = function () {
     nasprotniki.push(new LadjaNPC(path1));
     scene.add(nasprotniki[0]);
 
-    /*nasprotniki.push(new LadjaNPC());
-    nasprotniki[0].position.set(-55.553, 0.700, 31.663);
-    scene.add(nasprotniki[0]);*/
-
-    /*nasprotniki.push(new LadjaNPC());
-    nasprotniki[1].position.set(-78.905, 0.700, -5.316);
-    scene.add(nasprotniki[1]);*/
-
     // collision: nasprotniki - igralec
     nasprotniki.forEach(function (tmp) {
         tmp.addCollisionObject(ladja);
