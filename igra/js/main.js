@@ -77,7 +77,7 @@ window.onload = function () {
         new THREE.Vector3(-55.553, 0, 31.663),
         new THREE.Vector3(-78.905, 0, -5.316)
     ];
-    nasprotniki.push(new LadjaNPC(path1));
+    nasprotniki.push(new LadjaNPC(path1, ladja));
     scene.add(nasprotniki[0]);
 
     // collision: nasprotniki - igralec

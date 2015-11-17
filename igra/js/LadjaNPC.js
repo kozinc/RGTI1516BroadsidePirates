@@ -1,4 +1,4 @@
-function LadjaNPC(pointsToVisit) {
+function LadjaNPC(pointsToVisit, player) {
     // Dedovanje (klici konstruktor razreda Object3D)
     THREE.Object3D.call(this);
 
@@ -6,6 +6,12 @@ function LadjaNPC(pointsToVisit) {
     this.health = 3;
     this.collisionObjectList = [];
     this.krogleList = [];
+
+    // parametri streljanja
+    this.player = player;
+    this.shootEps = 50;
+    this.shootInterval = 50;
+    this.shootTimeout = this.shootInterval;
 
     // parametri premikanja
     this.position.x = pointsToVisit[0].x;
@@ -121,6 +127,19 @@ LadjaNPC.prototype.update = function () {
         this.vel = 0;
         if (this.position.y > -this.sinkMax) {
             this.translateY(-this.velSink);
+        }
+    }
+
+    // streljaj ce je igralec blizu
+    var dxPlayer = Math.abs(this.position.x - this.player.position.x);
+    var dzPlayer = Math.abs(this.position.z - this.player.position.z);
+    if (dxPlayer < this.shootEps && dzPlayer < this.shootEps && this.health > 0) {
+        if (this.shootTimeout < 0) {
+            this.shootLeft();
+            this.shootRight();
+            this.shootTimeout = this.shootInterval;
+        } else {
+            this.shootTimeout -= 1;
         }
     }
 };

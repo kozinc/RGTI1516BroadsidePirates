@@ -25,7 +25,7 @@ function Ladja() {
 
     this.accTurn = 0.001;
     this.accTurnStop = 0.0005;
-    this.velTurnMax = 0.01;
+    this.velTurnMax = 0.015;
 
     this.velRoll = 0.003;
     this.rollMax = 0.1;
