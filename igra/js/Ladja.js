@@ -31,11 +31,20 @@ function Ladja() {
     this.rollMax = 0.1;
 
     this.velSink = 0.03;
+    this.sinkMax = 3;
 
     // Konstruktor
     this.name = "ladja_".concat(this.id.toString());
     this.rotation.order = 'YXZ';
     this.translateY(0.7);
+
+    var self = this;
+    var loader = new THREE.OBJMTLLoader();
+    loader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
+        function (object) {
+            object.scale.set(1.5, 1.5, 1.5);
+            self.add(object);
+        });
 }
 // Dedovanje (nastavi metode in konstruktor)
 Ladja.prototype = Object.create(THREE.Object3D.prototype);
@@ -195,7 +204,7 @@ Ladja.prototype.update = function () {
         this.turningLeft = false;
         this.turningRight = false;
 
-        if (this.position.y > -1.8) {
+        if (this.position.y > -this.sinkMax) {
             this.translateY(-this.velSink);
         }
     }

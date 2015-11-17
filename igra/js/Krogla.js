@@ -29,6 +29,7 @@ function Krogla(parentCollisionList, power, origin, direction) {
     this.explosion.visible = false;
     this.add(this.explosion);
     this.timeout = 15;
+    this.timeoutRunning = false;
 }
 // Dedovanje (nastavi metode in konstruktor)
 Krogla.prototype = Object.create(THREE.Mesh.prototype);
@@ -53,9 +54,9 @@ Krogla.prototype.update = function () {
             this.readyToDelete = true;
         }
 
-        // preveri ce pride do kolizije in odstrani
+        // preveri ce pride do kolizije (samo enkrat)
         var intersectList = this.checkCollisions();
-        if (intersectList.length > 0) {
+        if (intersectList.length > 0 && !this.timeoutRunning) {
             this.velFwd = 0;
             this.accFwd = 0;
             this.velDown = 0;
@@ -64,23 +65,26 @@ Krogla.prototype.update = function () {
             // prikazi eksplozijo
             this.material.visible = false;
             this.explosion.visible = true;
-            this.timeout -= 1;
 
-            // odstrani geometrijo
-            if (this.timeout < 0) {
-                this.remove(this.explosion);
-                this.parent.remove(this);
-                this.readyToDelete = true;
-
-                // odstej zivljenje, ce smo zadeli ladjo
-                var hitObject = intersectList[0].object;
-                while (hitObject.parent) {
-                    if (hitObject.name.indexOf("ladja_") > -1) {
-                        hitObject.takeAHit();
-                    }
-                    hitObject = hitObject.parent;
+            // odstej zivljenje, ce smo zadeli ladjo
+            var hitObject = intersectList[0].object;
+            while (hitObject.parent) {
+                if (hitObject.name.indexOf("ladja_") > -1) {
+                    hitObject.takeAHit();
                 }
+                hitObject = hitObject.parent;
             }
+            this.timeoutRunning = true;
+        }
+
+        // odstrani geometrijo (po timeout)
+        if (this.timeoutRunning) {
+            this.timeout -= 1;
+        }
+        if (this.timeout < 0) {
+            this.remove(this.explosion);
+            this.parent.remove(this);
+            this.readyToDelete = true;
         }
     }
 };

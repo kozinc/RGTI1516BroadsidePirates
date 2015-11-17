@@ -12,13 +12,13 @@ var camera1;
 var camera2;
 var cameraMap;
 var cameraWater;
+var cameraMode;
 
 var scene;
 var renderer;
 
-var cameraMode;
 var ladja;
-var objMtlLoader;
+var objMtlLoader = new THREE.OBJMTLLoader();
 
 var healthbarDOM;
 var coinsDOM;
@@ -31,7 +31,6 @@ window.onload = function () {
     // Inicializacija
     var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
     var keyboard = new KeyboardState();
-    objMtlLoader = new THREE.OBJMTLLoader();
     healthbarDOM = document.getElementById("Healthbar");
     coinsDOM = document.getElementById("CollectedCoins");
 
@@ -70,34 +69,17 @@ window.onload = function () {
     //ladja igralca
     ladja = new Ladja();
     scene.add(ladja);
-    objMtlLoader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
-        function (object) {
-            object.scale.set(1.5, 1.5, 1.5);
-            ladja.add(object);
-        });
 
     // Dodamo nasprotnike
     var nasprotniki = [];
 
-    nasprotniki.push(new Ladja());
+    nasprotniki.push(new LadjaNPC());
     nasprotniki[0].position.set(-55.553, 0.700, 31.663);
-    nasprotniki[0].rotation.y = -0.662;
     scene.add(nasprotniki[0]);
-    objMtlLoader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
-        function (object) {
-            object.scale.set(1.5, 1.5, 1.5);
-            nasprotniki[0].add(object);
-        });
 
-    nasprotniki.push(new Ladja());
+    nasprotniki.push(new LadjaNPC());
     nasprotniki[1].position.set(-78.905, 0.700, -5.316);
-    nasprotniki[1].rotation.y = 0.946;
     scene.add(nasprotniki[1]);
-    objMtlLoader.load("models/ladja_majhna.obj", "models/ladja_majhna.mtl",
-        function (object) {
-            object.scale.set(1.5, 1.5, 1.5);
-            nasprotniki[1].add(object);
-        });
 
     // collision: nasprotniki - igralec
     nasprotniki.forEach(function (tmp) {
