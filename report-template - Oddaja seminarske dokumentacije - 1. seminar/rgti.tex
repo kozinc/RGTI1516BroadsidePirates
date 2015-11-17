@@ -28,14 +28,14 @@
 
 \selectlanguage{slovene}
 
-\begin{abstract}{Abstract}
-V tretjeosebni pustolovščini vodimo ladjo, polno zaklada mimo nasprotnikov do pristanišča, medtem ko se trudiš, da bi izgubil čim manj zaklada.
+\begin{abstract}{Povzetek}
+V tretjeosebni pustolovščini vodimo ladjo, polno zaklada mimo nasprotnikov do pristanišča, medtem ko se trudimo, da bi izgubil čim manj zaklada.
 \end{abstract}
 
 
 
 \section{Pregled igre}
-Naša igra je tretjeosebna pustolovščina, navdihnjena z igro Overboard!\cite{wiki:Overboard!}, v kateri igraš pirata, ki želi zbrati čimveč zaklada, brez da bi mu drugi pirati potopili ladjo. V zaprtem svetu se glavni igralec izogiba drugim ladjam ali pa jih napada s svojim orožjem medtem ko išče zaklad.
+Naša igra je tretjeosebna pustolovščina, navdihnjena z igro Overboard!\cite{wiki:Overboard!}, v kateri igramo pirata, ki želi zbrati čimveč zaklada, brez da bi mu drugi pirati potopili ladjo. V zaprtem svetu se glavni igralec izogiba drugim ladjam ali pa jih napada s svojim orožjem medtem ko išče zaklad.
 
 \begin{figure}[H]
     \begin{center}
@@ -48,24 +48,24 @@ Naša igra je tretjeosebna pustolovščina, navdihnjena z igro Overboard!\cite{w
 \textit{Dokumentacija naj bo v formatu PDF in naj vsebuje do 5000 znakov. V dokumentaciji opišite delo v okviru seminarja. Opišite uporabljene pristope in metode, ki ste jih uporabili pri izdelavi seminarja. }
 
 \subsection{Pregled}
-Pri izdelavi našega seminarja smo uporabili tehnologije WebGL, Three.js\cite{wiki:Three.js}, itd. Za nalaganje 3D objektov smo uporabili OBJMTLLoader, za detekcijo tipkanja na tipkovnici smo uporabili knižnjico KeyboardState. Za prikaz vode smo uporabili shader, ki je vodi priredil animirano teksturo normal \href{http://github.com/jbouny/ocean}{z namenom prikaza realistične vode}.
+Pri izdelavi našega seminarja smo uporabili tehnologije WebGL, Three.js\cite{wiki:Three.js}, itd. Za nalaganje 3D objektov smo uporabili OBJMTLLoader. Za prikaz vode smo uporabili shader, ki je vodi priredil animirano teksturo normal \href{http://github.com/jbouny/ocean}{z namenom prikaza realistične vode}.
 Pri razvoju naše igre smo si pomagali z uporabo GitHuba. \\
 \\
-V trenutni različici igre igralec lahko pobira cekine in strelja ladje - trenutno je cilj, da pobere čimveč cekinov, brez da bi se potopil. Te ladje se gibajo po vnaprej določeni poti in streljajo, če igralec pride v bližino.
+V trenutni različici igre, lahko igralec pobira cekine in strelja ladje. Njegov cilj je, da pobere čimveč cekinov, brez da bi ga nasprotniki potopili. Nasprotniki se gibajo po vnaprej določeni poti in streljajo, če igralec pride v bližino.
 
 
 \subsection{Potek programa}
-V naši igri se ob naložitvi okna inicializirajo potrebne spremenljive za igro, kot so scena, renderer, elementi HUD(življenje in rezultat) ter poslušalci tipkovnice. V sceni so ustvarjene tri kamere, dve za pogled igralca, tretja pa za prikaz mini-zemljevida z uporabo viewporta. \\
+V naši igri se ob naložitvi okna inicializirajo potrebne spremenljive za igro, kot so scena, renderer, elementi HUD (življenje in rezultat) ter poslušalci tipkovnice. V sceni so ustvarjene tri kamere, dve za pogled igralca, tretja pa za prikaz mini-zemljevida z uporabo viewporta. \\
 Nato se v sceno naložijo ladje - ladja igralca, pa tudi vsi sovražniki, ki se trenutno gibajo po prednastavljenih tirih. S pomočjo OBJMTL loaderja nato naložimo kopno, ki igralcu omejuje igralni prostor (vse ladje in kopno z uporabo metode addCollisionObject registriramo kot objekte, ki se jim preverja trčenje). Dodano je tudi pristanišče, ki pa kot igralni predmet trenutno še nima pomena. Nato je po zemljevidu naključno posejanih 50 kovancev, ki jih igralec s pomočjo metode checkCollect pobira in si tako povečuje rezultat. \\
-V sceno so nato naloženi viri svetlobe (AmbientLight, 2 Directional Light), shaderji in pa Skybox, ki igralcu olepšajo svet.\\
-Ko se igra naloži, se igralec nato lahko premika, strelja krogle(Krogla.js) in pobira kovance.
+V sceno so nato naloženi viri svetlobe (AmbientLight, 2x Directional Light), shaderji in pa Skybox, ki igralcu olepšajo svet.\\
+Ko se igra naloži, se igralec nato lahko premika, strelja krogle (Krogla.js) in pobira kovance.
 
 \subsection{Opis pomembnejših funkcij}
 
 \begin{itemize}
 \item \textit{updateHUD} - tukaj se posodobijo elementi HUD, trenutno življenje in kovanci
 \item \textit{checkCollision} - tukaj preverimo trčenje med objekti
-\item \textit{update} - tukaj posodabljamo premikanje objekta in pohandlamo trčenje (v primeru ladje, ob trčenju z kopnim ali drugo ladjo, premik in rotacijo izničimo)
+\item \textit{update} - tukaj posodabljamo premikanje objekta in zaznavamo trčenje (v primeru ladje, ob trčenju z kopnim ali drugo ladjo, premik in rotacijo izničimo)
 \end{itemize}
 
 
