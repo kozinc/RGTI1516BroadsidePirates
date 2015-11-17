@@ -29,8 +29,7 @@ window.addEventListener('keyup', handleKeyUp, false);
 
 window.onload = function () {
     // Inicializacija
-    var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
-    var keyboard = new KeyboardState();
+    //var stats = initStats(); // Prikazuj FPS-je zgoraj levo.
     healthbarDOM = document.getElementById("Healthbar");
     coinsDOM = document.getElementById("CollectedCoins");
 
@@ -249,8 +248,7 @@ window.onload = function () {
     function render() {
         renderer.clear();
         renderer.setViewport( 0, 0, window.innerWidth, window.innerHeight );
-        stats.update(); // Posodobi FPS-je.
-        keyboard.update(); // Posodobi stanje tipkovnice.
+        //stats.update(); // Posodobi FPS-je.
         voda.update(); // Posodobi vodo.
 
         ladja.update(); // Posodobi ladjo in njene krogle
