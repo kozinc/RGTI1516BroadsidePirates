@@ -1,5 +1,4 @@
-
-function LadjaNPC() {
+function LadjaNPC(pointsToVisit) {
     // Dedovanje (klici konstruktor razreda Object3D)
     THREE.Object3D.call(this);
 
@@ -9,16 +8,24 @@ function LadjaNPC() {
     this.krogleList = [];
 
     // parametri premikanja
+    this.position.x = pointsToVisit[0].x;
+    this.position.z = pointsToVisit[0].z;
+    this.direction = (new THREE.Vector3(0, 0, 0))
+        .subVectors(pointsToVisit[1], pointsToVisit[0]).normalize();
+    var firstPoint = pointsToVisit.shift();
+    pointsToVisit.push(firstPoint);
+    this.pointsToVisit = pointsToVisit;
+    this.eps = 1;
+
     this.velMax = 0.15;
     this.vel = 0.15;
-    this.direction = new THREE.Vector3(1, 0, 0).normalize();
     this.velSink = 0.03;
     this.sinkMax = 8;
 
     // Konstruktor
     this.name = "ladja_".concat(this.id.toString());
     this.rotation.order = 'YXZ';
-    this.translateY(0.7);
+    this.translateY(1);
 
     var self = this;
     var loader = new THREE.OBJMTLLoader();
@@ -78,8 +85,19 @@ LadjaNPC.prototype.update = function () {
     this.position.x += this.direction.x * this.vel;
     this.position.z += this.direction.z * this.vel;
     // nastavi rotacijo ladje
+    // TODO: popravi
     var directionFwd = new THREE.Vector3(-1, 0, 0);
     this.rotation.y = this.direction.angleTo(directionFwd);
+
+    var dx = Math.abs(this.position.x - this.pointsToVisit[0].x);
+    var dz = Math.abs(this.position.z - this.pointsToVisit[0].z);
+
+    if (dx < this.eps && dz < this.eps) {
+        this.direction = (new THREE.Vector3(0, 0, 0))
+            .subVectors(this.pointsToVisit[1], this.pointsToVisit[0]).normalize();
+        var firstPoint = this.pointsToVisit.shift();
+        this.pointsToVisit.push(firstPoint);
+    }
 
     // ce pride do kolizije, potem iznici premik in rotacijo
     if (this.checkCollisions()) {

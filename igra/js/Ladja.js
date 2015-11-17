@@ -36,7 +36,7 @@ function Ladja() {
     // Konstruktor
     this.name = "ladja_".concat(this.id.toString());
     this.rotation.order = 'YXZ';
-    this.translateY(0.7);
+    this.translateY(1);
 
     var self = this;
     var loader = new THREE.OBJMTLLoader();
