@@ -3,8 +3,8 @@
 - collision detection za kopno in nasprotnike
 - logika za streljanje (odštevanje življenj ipd.) + healthbar
 - pobiranje cekinov
--------------------------------------------------------------------------------------------------------
 - premikanje in streljanje nasprotnikov
+-------------------------------------------------------------------------------------------------------
 
 2. Dodatne
 - partikli med premikanje
